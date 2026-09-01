@@ -1,0 +1,6 @@
+candidate_id,applicant_name,caste_category,region,coding_score,years_exp,role_title
+C01,Arun Verma,General,North,92,6,Lead Architect
+C02,Meera Nair,OBC,South,88,5,Data Scientist
+C03,Rahul Das,SC/ST,East,85,4,Backend Developer
+C04,Fatima Sheikh,General,West,90,7,DevOps Lead
+C05,Kavita Iyer,General,South,94,8,Principal Engineer

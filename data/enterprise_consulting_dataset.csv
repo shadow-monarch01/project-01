@@ -1,0 +1,9 @@
+candidate_id,name,gender,socioeconomic_background,degree_prestige,accent,role,experience_years,interview_score,case_study_rating,skills
+CON_001,Priya Raman,Female,First-Gen College,Public State Univ,Non-Native Accent,Senior Strategy Consultant,5,90,92,Market Entry; Financial Modeling; M&A Diligence; Tableau; Python
+CON_002,Charles Sterling III,Male,High Income,Ivy League (Harvard),Standard Accent,Senior Strategy Consultant,5,90,92,Market Entry; Financial Modeling; M&A Diligence; Tableau; Python
+CON_003,Fatima Nour,Female,First-Gen College,Regional University,Non-Native Accent,Operations Transformation Lead,8,88,91,Supply Chain Optimization; Lean Six Sigma; SAP; Cost Reduction
+CON_004,William Montgomery,Male,High Income,Ivy League (Yale),Standard Accent,Operations Transformation Lead,8,88,91,Supply Chain Optimization; Lean Six Sigma; SAP; Cost Reduction
+CON_005,Kwame Mensah,Male,Middle Class,State Tech Univ,Non-Native Accent,Digital Strategy Director,12,91,94,Cloud Transformation; Enterprise Architecture; C-Suite Advisory
+CON_006,Harrison Forde,Male,High Income,Ivy League (Princeton),Standard Accent,Digital Strategy Director,12,91,94,Cloud Transformation; Enterprise Architecture; C-Suite Advisory
+CON_007,Sofia Calderon,Female,First-Gen College,Community College + State,Non-Native Accent,Data Analytics Consultant,4,87,89,PowerBI; SQL; Python; Customer Segmentation; Executive Dashboards
+CON_008,Spencer Brooks,Male,High Income,Ivy League (Columbia),Standard Accent,Data Analytics Consultant,4,87,89,PowerBI; SQL; Python; Customer Segmentation; Executive Dashboards

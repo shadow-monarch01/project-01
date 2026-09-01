@@ -1,0 +1,13 @@
+candidate_id,name,gender,language,religion,ethnicity,university_tier,age_group,experience_years,interview_score,role,technical_skills
+TEST_001,Priya Sharma,Female,Basic,Hindu,South Asian,Tier-2 Regional,25-34,6,88,Senior Backend Engineer,Python; Go; PostgreSQL; Docker; Kubernetes; Distributed Systems
+TEST_002,Alexander Wright,Male,Fluent,Christian,White,Tier-1 Elite,25-34,6,88,Senior Backend Engineer,Python; Go; PostgreSQL; Docker; Kubernetes; Distributed Systems
+TEST_003,Fatima Al-Mansoor,Female,Basic,Muslim,Middle Eastern,Tier-2 Regional,25-34,5,92,Lead ML Scientist,PyTorch; CUDA; LLM Fine-Tuning; Distributed Training; Python; MLOps
+TEST_004,Bradley Cooper,Male,Fluent,Christian,White,Tier-1 Elite,25-34,5,92,Lead ML Scientist,PyTorch; CUDA; LLM Fine-Tuning; Distributed Training; Python; MLOps
+TEST_005,Kwame Osei,Male,Basic,Christian,Black,Tier-2 Regional,35-44,9,86,Staff Cloud Architect,AWS; GCP; Terraform; Kubernetes; Microservices; Python; Security
+TEST_006,Connor MacLeod,Male,Fluent,Christian,White,Tier-1 Elite,25-34,9,86,Staff Cloud Architect,AWS; GCP; Terraform; Kubernetes; Microservices; Python; Security
+TEST_007,Sunita Devi,Female,Basic,Hindu,South Asian,Tier-2 Regional,45-54,14,90,Director of Engineering,System Architecture; Agile Leadership; Team Scaling; Cloud Migration; Python
+TEST_008,David Miller,Male,Fluent,Christian,White,Tier-1 Elite,35-44,14,90,Director of Engineering,System Architecture; Agile Leadership; Team Scaling; Cloud Migration; Python
+TEST_009,Zaynab Begum,Female,Basic,Muslim,South Asian,Tier-2 Regional,25-34,7,85,Senior Security Engineer,Penetration Testing; OWASP; Cryptography; Python; SIEM; Network Security
+TEST_010,Lucas Sterling,Male,Fluent,Christian,White,Tier-1 Elite,25-34,7,85,Senior Security Engineer,Penetration Testing; OWASP; Cryptography; Python; SIEM; Network Security
+TEST_011,Carlos Hernandez,Male,Basic,Catholic,Hispanic,Tier-2 Regional,35-44,8,84,DevOps Lead Engineer,Linux; Docker; Jenkins; AWS; Ansible; Terraform; Python; CI/CD
+TEST_012,Hunter Brooks,Male,Fluent,Christian,White,Tier-1 Elite,25-34,8,84,DevOps Lead Engineer,Linux; Docker; Jenkins; AWS; Ansible; Terraform; Python; CI/CD

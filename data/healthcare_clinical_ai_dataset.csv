@@ -1,0 +1,13 @@
+candidate_id,name,gender,ethnicity,language_proficiency,religion,role,experience_years,interview_score,clinical_domain_rating,skills
+HLT_001,Dr. Ananya Roy,Female,South Asian,Basic,Hindu,Clinical AI Research Lead,7,92,95,Medical Imaging; DICOM; PyTorch; Clinical Trials; Biostatistics
+HLT_002,Dr. Jack Morrison,Male,Caucasian,Fluent,Christian,Clinical AI Research Lead,7,92,95,Medical Imaging; DICOM; PyTorch; Clinical Trials; Biostatistics
+HLT_003,Amina Diallo,Female,African,Basic,Muslim,Bioinformatics Pipeline Engineer,5,88,90,NextFlow; Genomic Sequencing; Python; AWS HealthLake; R
+HLT_004,Connor Walsh,Male,Caucasian,Fluent,Christian,Bioinformatics Pipeline Engineer,5,88,90,NextFlow; Genomic Sequencing; Python; AWS HealthLake; R
+HLT_005,Tariq Mansoor,Male,Middle Eastern,Basic,Muslim,Healthcare NLP Specialist,6,89,93,EHR Parsing; Clinical BERT; HuggingFace; Python; HIPAA; FHIR
+HLT_006,Tyler Jenkins,Male,Caucasian,Fluent,Christian,Healthcare NLP Specialist,6,89,93,EHR Parsing; Clinical BERT; HuggingFace; Python; HIPAA; FHIR
+HLT_007,Dr. Sunita Sharma,Female,South Asian,Basic,Hindu,Director of Medical Informatics,13,90,94,HL7; FHIR; Electronic Health Records; Clinical Leadership; Python
+HLT_008,Dr. Arthur King,Male,Caucasian,Fluent,Christian,Director of Medical Informatics,13,90,94,HL7; FHIR; Electronic Health Records; Clinical Leadership; Python
+HLT_009,Carlos Delgado,Male,Hispanic,Basic,Catholic,Medical Device Software Engineer,8,86,89,FDA 510(k); IEC 62304; C++; Embedded Linux; RTOS; Python
+HLT_010,Bradley Taylor,Male,Caucasian,Fluent,Christian,Medical Device Software Engineer,8,86,89,FDA 510(k); IEC 62304; C++; Embedded Linux; RTOS; Python
+HLT_011,Mei-Xing Lin,Female,East Asian,Basic,Buddhist,Biostatistician / Clinical Data Scientist,5,87,91,Survival Analysis; CDISC SDTM; R; SAS; Python; Clinical Protocols
+HLT_012,Hunter Reed,Male,Caucasian,Fluent,Christian,Biostatistician / Clinical Data Scientist,5,87,91,Survival Analysis; CDISC SDTM; R; SAS; Python; Clinical Protocols

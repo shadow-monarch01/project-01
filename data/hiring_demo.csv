@@ -1,0 +1,21 @@
+candidate_id,name,gender,religion,language,ethnicity,age_group,education,university_tier,experience_years,technical_skills,interview_score,github_contributions,certifications_count,prior_salary_k,expected_role
+C001,Lucas Bennett,Male,Buddhist,Fluent,White,18-24,M.S. Statistics,Tier 2,1,Python; Flask; Git; SQLite; HTML/CSS; JavaScript; OOP Basics,76,823,4,77,Junior Software Developer
+C002,Darius Robinson,Male,Catholic,Native,Black,18-24,Ph.D. Computer Science,Tier 1,0,Agile Leadership; System Design; Team Mentorship; Cloud Architecture; Python; Java; Budgets,86,19,4,173,Engineering Manager
+C003,Aaliyah Harris,Female,Buddhist,Fluent,Black,25-34,B.S. Software Engineering,Tier 1,2,SQL; Python; Tableau; PowerBI; Pandas; Data Warehousing; Snowflake,90,125,1,96,Data Analyst / BI Specialist
+C004,Fatima Zahra,Female,Christian,Native,Middle Eastern,18-24,B.S. Software Engineering,Tier 3,1,Agile Leadership; System Design; Team Mentorship; Cloud Architecture; Python; Java; Budgets,82,520,1,175,Engineering Manager
+C005,Layla Hassan,Female,Christian,Fluent,Middle Eastern,25-34,Ph.D. Computer Science,Tier 1,3,Python; PyTorch; TensorFlow; Distributed Systems; MLOps; CUDA; SQL,83,669,1,170,Senior ML Engineer
+C006,Aarav Sharma,Male,Buddhist,Basic,Asian,18-24,B.S. Software Engineering,Tier 2,0,SQL; Python; Tableau; PowerBI; Pandas; Data Warehousing; Snowflake,77,42,4,90,Data Analyst / BI Specialist
+C007,Marcus Washington,Male,Catholic,Native,Black,18-24,M.S. Statistics,Tier 3,0,SQL; Python; Tableau; PowerBI; Pandas; Data Warehousing; Snowflake,97,400,0,81,Data Analyst / BI Specialist
+C008,Mariam Karim,Female,Christian,Native,Middle Eastern,25-34,M.S. Computer Science,Tier 2,0,Python; Flask; Git; SQLite; HTML/CSS; JavaScript; OOP Basics,84,543,3,65,Junior Software Developer
+C009,Layla Hassan,Female,Jewish,Basic,Middle Eastern,18-24,Ph.D. Computer Science,Tier 1,1,Transformers; Multi-Modal AI; Reinforcement Learning; PyTorch; C++; Distributed GPU Training,88,421,3,204,Principal AI Research Scientist
+C010,Alexander Smith,Male,Jewish,Native,White,25-34,M.S. Statistics,Tier 3,3,Python; Flask; Git; SQLite; HTML/CSS; JavaScript; OOP Basics,74,174,1,87,Junior Software Developer
+C011,Ebony Jackson,Female,Buddhist,Basic,Black,25-34,B.S. Data Science,Tier 1,8,Go; Kubernetes; Terraform; Docker; AWS; Prometheus; CI/CD pipelines,95,277,1,190,Cloud DevOps & Platform Engineer
+C012,Ebony Jackson,Female,Catholic,Fluent,Black,35-44,B.S. Software Engineering,Tier 1,4,Go; Kubernetes; Terraform; Docker; AWS; Prometheus; CI/CD pipelines,94,99,2,161,Cloud DevOps & Platform Engineer
+C013,Yasmin Demir,Female,Hindu,Basic,Middle Eastern,45-54,B.S. Computer Science,Tier 2,13,JavaScript; TypeScript; React; Node.js; PostgreSQL; GraphQL; Docker,85,547,1,210,Full Stack Software Engineer
+C014,Nia Asante,Female,Hindu,Fluent,Black,45-54,M.S. Statistics,Tier 2,11,Transformers; Multi-Modal AI; Reinforcement Learning; PyTorch; C++; Distributed GPU Training,100,448,2,257,Principal AI Research Scientist
+C015,Omar Al-Mansoor,Male,Jewish,Fluent,Middle Eastern,18-24,M.S. Artificial Intelligence,Tier 3,1,JavaScript; TypeScript; React; Node.js; PostgreSQL; GraphQL; Docker,83,764,4,129,Full Stack Software Engineer
+C016,Alejandro Morales,Male,Agnostic,Fluent,Hispanic,45-54,B.S. Software Engineering,Tier 2,11,Agile Leadership; System Design; Team Mentorship; Cloud Architecture; Python; Java; Budgets,100,480,4,254,Engineering Manager
+C017,David Miller,Male,Buddhist,Native,White,25-34,M.S. Computer Science,Tier 2,8,Transformers; Multi-Modal AI; Reinforcement Learning; PyTorch; C++; Distributed GPU Training,81,129,3,236,Principal AI Research Scientist
+C018,Amina Al-Mansoor,Female,Buddhist,Basic,Middle Eastern,35-44,B.S. Data Science,Tier 2,5,Python; PyTorch; TensorFlow; Distributed Systems; MLOps; CUDA; SQL,78,792,3,166,Senior ML Engineer
+C019,Mei Ling,Female,Catholic,Native,Asian,35-44,M.S. Artificial Intelligence,Tier 3,11,Go; Kubernetes; Terraform; Docker; AWS; Prometheus; CI/CD pipelines,80,37,0,206,Cloud DevOps & Platform Engineer
+C020,Kwame Asante,Male,Christian,Fluent,Black,25-34,M.S. Software Engineering,Tier 1,1,Python; Flask; Git; SQLite; HTML/CSS; JavaScript; OOP Basics,74,291,4,87,Junior Software Developer

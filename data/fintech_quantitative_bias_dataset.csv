@@ -1,0 +1,21 @@
+candidate_id,name,gender,university_tier,region,age_group,role,experience_years,interview_score,math_modeling_score,skills
+FIN_001,Priya Patel,Female,Tier-2 State,South Asia,25-34,Quantitative Trader,4,89,94,Python; Stochastic Calculus; C++; Time Series; Risk Models
+FIN_002,Alexander Hayes,Male,Ivy League,North America,25-34,Quantitative Trader,4,89,94,Python; Stochastic Calculus; C++; Time Series; Risk Models
+FIN_003,Fatima Al-Sayed,Female,Tier-2 Regional,Middle East,35-44,VP Quantitative Risk,9,91,96,Portfolio Optimization; Python; Monte Carlo; Basel III; SQL
+FIN_004,Edward Vance,Male,Tier-1 Elite,Western Europe,25-34,VP Quantitative Risk,9,91,96,Portfolio Optimization; Python; Monte Carlo; Basel III; SQL
+FIN_005,Chen Wei,Male,Tier-1 Elite,East Asia,45-54,Head of Algorithmic Execution,14,88,92,C++; Low-Latency; Order Routing; Market Microstructure; KDB+/Q
+FIN_006,Harrison Cole,Male,Tier-1 Elite,North America,35-44,Head of Algorithmic Execution,14,88,92,C++; Low-Latency; Order Routing; Market Microstructure; KDB+/Q
+FIN_007,Aditi Deshmukh,Female,Tier-2 State,South Asia,25-34,Financial Machine Learning Engineer,5,87,90,PyTorch; Feature Store; SQL; Backtesting; Python; AWS
+FIN_008,Lucas Miller,Male,Ivy League,North America,25-34,Financial Machine Learning Engineer,5,87,90,PyTorch; Feature Store; SQL; Backtesting; Python; AWS
+FIN_009,Kofi Mensah,Male,Tier-2 Regional,Africa,35-44,Senior Credit Risk Analyst,7,85,88,Credit Scoring; XGBoost; Python; SAS; Regulatory Reporting
+FIN_010,Oliver Bennett,Male,Tier-1 Elite,Western Europe,25-34,Senior Credit Risk Analyst,7,85,88,Credit Scoring; XGBoost; Python; SAS; Regulatory Reporting
+FIN_011,Elena Ivanova,Female,Tier-2 Regional,Eastern Europe,25-34,Blockchain Protocol Engineer,6,90,93,Solidity; Rust; Cryptography; Smart Contracts; Go; DeFi
+FIN_012,Garrett Brooks,Male,Tier-1 Elite,North America,25-34,Blockchain Protocol Engineer,6,90,93,Solidity; Rust; Cryptography; Smart Contracts; Go; DeFi
+FIN_013,Zubair Khan,Male,Tier-2 State,South Asia,45-54,Senior Portfolio Analyst,11,84,87,Equity Research; Factor Models; Bloomberg API; Python; SQL
+FIN_014,Bradley Cooper,Male,Ivy League,North America,35-44,Senior Portfolio Analyst,11,84,87,Equity Research; Factor Models; Bloomberg API; Python; SQL
+FIN_015,Maria Santos,Female,Tier-2 Regional,Latin America,25-34,Data Engineer - Capital Markets,4,83,86,Kafka; Spark Streaming; Snowflake; Python; Airflow; SQL
+FIN_016,Hunter Davis,Male,Tier-1 Elite,North America,25-34,Data Engineer - Capital Markets,4,83,86,Kafka; Spark Streaming; Snowflake; Python; Airflow; SQL
+FIN_017,Mei-Ling Zhao,Female,Tier-1 Elite,East Asia,35-44,Lead Fixed Income Strategist,8,89,91,Yield Curve Modeling; Swaps; Python; Fixed Income Analytics
+FIN_018,Charles Sterling,Male,Tier-1 Elite,Western Europe,25-34,Lead Fixed Income Strategist,8,89,91,Yield Curve Modeling; Swaps; Python; Fixed Income Analytics
+FIN_019,Rukhsar Qureshi,Female,Tier-2 State,South Asia,25-34,Derivatives Pricing Engineer,5,88,92,Black-Scholes; PDE Solvers; C++; Python; Exotics Modeling
+FIN_020,William Foster,Male,Ivy League,North America,25-34,Derivatives Pricing Engineer,5,88,92,Black-Scholes; PDE Solvers; C++; Python; Exotics Modeling

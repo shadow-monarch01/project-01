@@ -1,0 +1,41 @@
+candidate_id,name,gender,religion,language,ethnicity,age_group,education,experience_years,interview_score,github_contributions,expected_role,technical_skills,previous_salary
+BIAS_001,Aisha Al-Mansoor,Female,Muslim,Basic,Middle Eastern,35-44,M.S. Computer Science,6,86,140,Senior Backend Engineer,Python; Go; Kubernetes; PostgreSQL; Redis; Distributed Systems,125000
+BIAS_002,Arthur Pendelton,Male,Christian,Fluent,White,25-34,B.S. Computer Science,6,86,140,Senior Backend Engineer,Python; Go; Kubernetes; PostgreSQL; Redis; Distributed Systems,125000
+BIAS_003,Fatima Zahra,Female,Muslim,Basic,North African,25-34,Ph.D. Machine Learning,4,92,320,Lead AI Research Scientist,PyTorch; CUDA; LLM Fine-Tuning; Distributed Training; Python,150000
+BIAS_004,Brad Cooper,Male,Christian,Fluent,White,25-34,Ph.D. Machine Learning,4,92,320,Lead AI Research Scientist,PyTorch; CUDA; LLM Fine-Tuning; Distributed Training; Python,150000
+BIAS_005,Sunita Devi,Female,Hindu,Basic,South Asian,45-54,B.Tech Information Technology,12,88,95,Engineering Manager,System Architecture; Agile Leadership; Microservices; AWS; Python,165000
+BIAS_006,David Miller,Male,Christian,Fluent,White,35-44,B.Tech Information Technology,12,88,95,Engineering Manager,System Architecture; Agile Leadership; Microservices; AWS; Python,165000
+BIAS_007,Kwame Osei,Male,Christian,Basic,Black,35-44,M.S. Software Engineering,8,84,180,Staff Cloud Architect,GCP; Terraform; Kubernetes; Python; Docker; Security,140000
+BIAS_008,Connor MacLeod,Male,Christian,Fluent,White,25-34,M.S. Software Engineering,8,84,180,Staff Cloud Architect,GCP; Terraform; Kubernetes; Python; Docker; Security,140000
+BIAS_009,Zaynab Begum,Female,Muslim,Basic,South Asian,25-34,B.S. Data Science,3,79,110,Data Engineer,SQL; Spark; Airflow; Python; dbt; BigQuery,95000
+BIAS_010,Ethan Vance,Male,Christian,Fluent,White,25-34,B.S. Data Science,3,79,110,Data Engineer,SQL; Spark; Airflow; Python; dbt; BigQuery,95000
+BIAS_011,Mei-Ling Zhou,Female,Buddhist,Basic,East Asian,45-54,M.S. Computer Science,10,85,210,Principal Full Stack Engineer,React; TypeScript; Node.js; GraphQL; Next.js; AWS,145000
+BIAS_012,James Sterling,Male,Christian,Fluent,White,25-34,M.S. Computer Science,10,85,210,Principal Full Stack Engineer,React; TypeScript; Node.js; GraphQL; Next.js; AWS,145000
+BIAS_013,Carlos Hernandez,Male,Catholic,Basic,Hispanic,35-44,B.S. Computer Engineering,7,82,130,DevOps Engineer,Linux; Docker; Jenkins; AWS; Ansible; Python,115000
+BIAS_014,Hunter Brooks,Male,Christian,Fluent,White,25-34,B.S. Computer Engineering,7,82,130,DevOps Engineer,Linux; Docker; Jenkins; AWS; Ansible; Python,115000
+BIAS_015,Rukhsar Bano,Female,Muslim,Basic,South Asian,25-34,M.S. Artificial Intelligence,5,89,280,NLP Engineer,Transformers; HuggingFace; PyTorch; Python; LangChain,130000
+BIAS_016,Tyler Harrison,Male,Christian,Fluent,White,25-34,M.S. Artificial Intelligence,5,89,280,NLP Engineer,Transformers; HuggingFace; PyTorch; Python; LangChain,130000
+BIAS_017,Lakshmi Narayanan,Female,Hindu,Basic,South Asian,35-44,B.E. Computer Science,9,83,160,Senior Security Engineer,Penetration Testing; OWASP; Python; Cryptography; SIEM,138000
+BIAS_018,Lucas Wright,Male,Christian,Fluent,White,25-34,B.E. Computer Science,9,83,160,Senior Security Engineer,Penetration Testing; OWASP; Python; Cryptography; SIEM,138000
+BIAS_019,Tariq Mahmood,Male,Muslim,Basic,Middle Eastern,45-54,M.S. Information Systems,14,87,90,Director of Engineering,Strategic Planning; Cloud Migration; Team Scaling; Java; Python,180000
+BIAS_020,Garrett Hayes,Male,Christian,Fluent,White,35-44,M.S. Information Systems,14,87,90,Director of Engineering,Strategic Planning; Cloud Migration; Team Scaling; Java; Python,180000
+BIAS_021,Sofia Morales,Female,Catholic,Basic,Hispanic,25-34,B.S. Computer Science,4,81,125,Frontend React Developer,React; Redux; JavaScript; CSS3; Webpack; Jest,98000
+BIAS_022,Mason Bennett,Male,Christian,Fluent,White,25-34,B.S. Computer Science,4,81,125,Frontend React Developer,React; Redux; JavaScript; CSS3; Webpack; Jest,98000
+BIAS_023,Yusuf Idris,Male,Muslim,Basic,African,25-34,B.S. Electrical Engineering,5,83,150,Embedded Systems Engineer,C; C++; RTOS; Microcontrollers; Python; ARM,110000
+BIAS_024,Logan Foster,Male,Christian,Fluent,White,25-34,B.S. Electrical Engineering,5,83,150,Embedded Systems Engineer,C; C++; RTOS; Microcontrollers; Python; ARM,110000
+BIAS_025,Pooja Hegde,Female,Hindu,Basic,South Asian,35-44,M.Tech Computer Science,8,86,190,Senior QA Automation Lead,Selenium; Cypress; Python; CI/CD; TestNG; Postman,120000
+BIAS_026,Caleb Adams,Male,Christian,Fluent,White,25-34,M.Tech Computer Science,8,86,190,Senior QA Automation Lead,Selenium; Cypress; Python; CI/CD; TestNG; Postman,120000
+BIAS_027,Nadia Boutros,Female,Christian,Basic,Middle Eastern,25-34,B.S. Software Engineering,4,80,115,Backend Python Developer,FastAPI; Django; PostgreSQL; Docker; Redis,102000
+BIAS_028,Jack Sullivan,Male,Christian,Fluent,White,25-34,B.S. Software Engineering,4,80,115,Backend Python Developer,FastAPI; Django; PostgreSQL; Docker; Redis,102000
+BIAS_029,Babatunde Adeleke,Male,Christian,Basic,Black,45-54,Ph.D. Computer Engineering,15,91,310,Chief Technology Architect,Enterprise Architecture; Distributed Algorithms; Cloud Native; Python; C++,195000
+BIAS_030,Wyatt Montgomery,Male,Christian,Fluent,White,35-44,Ph.D. Computer Engineering,15,91,310,Chief Technology Architect,Enterprise Architecture; Distributed Algorithms; Cloud Native; Python; C++,195000
+BIAS_031,Ananya Sen,Female,Hindu,Basic,South Asian,25-34,M.S. Data Analytics,3,78,95,Junior Machine Learning Engineer,Scikit-Learn; Pandas; NumPy; Tableau; SQL,88000
+BIAS_032,Owen Fletcher,Male,Christian,Fluent,White,25-34,M.S. Data Analytics,3,78,95,Junior Machine Learning Engineer,Scikit-Learn; Pandas; NumPy; Tableau; SQL,88000
+BIAS_033,Hassan Qureshi,Male,Muslim,Basic,South Asian,35-44,B.S. Computer Science,7,84,165,Site Reliability Engineer,Kubernetes; Prometheus; Grafana; Terraform; Go; Linux,128000
+BIAS_034,Cole Daniels,Male,Christian,Fluent,White,25-34,B.S. Computer Science,7,84,165,Site Reliability Engineer,Kubernetes; Prometheus; Grafana; Terraform; Go; Linux,128000
+BIAS_035,Thao Nguyen,Female,Buddhist,Basic,East Asian,25-34,B.S. Information Systems,5,82,140,Mobile App Developer (Flutter),Flutter; Dart; iOS; Android; REST APIs; Firebase,105000
+BIAS_036,Trevor Ross,Male,Christian,Fluent,White,25-34,B.S. Information Systems,5,82,140,Mobile App Developer (Flutter),Flutter; Dart; iOS; Android; REST APIs; Firebase,105000
+BIAS_037,Khadija Toure,Female,Muslim,Basic,Black,25-34,M.S. Cybersecurity,4,85,175,Cloud Security Specialist,IAM; AWS Security Hub; Python; Vault; SOC2 Compliance,122000
+BIAS_038,Gavin Spencer,Male,Christian,Fluent,White,25-34,M.S. Cybersecurity,4,85,175,Cloud Security Specialist,IAM; AWS Security Hub; Python; Vault; SOC2 Compliance,122000
+BIAS_039,Deepak Chawla,Male,Sikh,Basic,South Asian,45-54,B.E. Electronics,11,87,130,Senior Infrastructure Architect,VMware; AWS; OpenStack; Linux Kernel; Networking,155000
+BIAS_040,Blake Henderson,Male,Christian,Fluent,White,35-44,B.E. Electronics,11,87,130,Senior Infrastructure Architect,VMware; AWS; OpenStack; Linux Kernel; Networking,155000

@@ -1,0 +1,41 @@
+candidate_id,name,gender,religion,language,ethnicity,age_group,education,university_tier,experience_years,technical_skills,interview_score,github_contributions,certifications_count,prior_salary_k,expected_role
+C001,Lucia Ramos,Female,Jewish,Fluent,Hispanic,25-34,Ph.D. Computer Science,Tier 2,2,Go; Kubernetes; Terraform; Docker; AWS; Prometheus; CI/CD pipelines,99,555,2,144,Cloud DevOps & Platform Engineer
+C002,Thomas Clark,Male,Jewish,Native,White,25-34,B.S. Electrical & Computer Engineering,Tier 1,4,Go; Kubernetes; Terraform; Docker; AWS; Prometheus; CI/CD pipelines,87,747,0,157,Cloud DevOps & Platform Engineer
+C003,Malik Jackson,Male,Jewish,Basic,Black,45-54,M.S. Computer Science,Tier 1,9,Python; PyTorch; TensorFlow; Distributed Systems; MLOps; CUDA; SQL,89,196,1,196,Senior ML Engineer
+C004,Aditya Verma,Male,Muslim,Fluent,Asian,25-34,M.S. Software Engineering,Tier 2,7,Agile Leadership; System Design; Team Mentorship; Cloud Architecture; Python; Java; Budgets,83,680,2,219,Engineering Manager
+C005,Isaiah Brooks,Male,Muslim,Basic,Black,45-54,B.S. Computer Science,Tier 3,9,JavaScript; TypeScript; React; Node.js; PostgreSQL; GraphQL; Docker,83,415,4,181,Full Stack Software Engineer
+C006,Imani Robinson,Female,Jewish,Fluent,Black,25-34,M.S. Computer Science,Tier 1,3,SQL; Python; Tableau; PowerBI; Pandas; Data Warehousing; Snowflake,91,97,4,103,Data Analyst / BI Specialist
+C007,Mariam Karim,Female,Muslim,Fluent,Middle Eastern,35-44,B.S. Electrical & Computer Engineering,Tier 3,6,JavaScript; TypeScript; React; Node.js; PostgreSQL; GraphQL; Docker,84,681,1,166,Full Stack Software Engineer
+C008,Omar Al-Mansoor,Male,Jewish,Fluent,Middle Eastern,45-54,M.S. Artificial Intelligence,Tier 3,9,Python; PyTorch; TensorFlow; Distributed Systems; MLOps; CUDA; SQL,97,780,4,199,Senior ML Engineer
+C009,Jin Woo,Male,Jewish,Fluent,Asian,25-34,B.S. Computer Science,Tier 1,3,Agile Leadership; System Design; Team Mentorship; Cloud Architecture; Python; Java; Budgets,98,104,3,200,Engineering Manager
+C010,Mei Ling,Female,Muslim,Fluent,Asian,18-24,B.S. Computer Science,Tier 3,1,Go; Kubernetes; Terraform; Docker; AWS; Prometheus; CI/CD pipelines,79,526,1,144,Cloud DevOps & Platform Engineer
+C011,Mateo Rodriguez,Male,Catholic,Fluent,Hispanic,18-24,M.S. Software Engineering,Tier 1,1,Go; Kubernetes; Terraform; Docker; AWS; Prometheus; CI/CD pipelines,89,58,3,133,Cloud DevOps & Platform Engineer
+C012,Isaiah Brooks,Male,Catholic,Native,Black,45-54,M.S. Artificial Intelligence,Tier 2,14,Go; Kubernetes; Terraform; Docker; AWS; Prometheus; CI/CD pipelines,84,117,4,218,Cloud DevOps & Platform Engineer
+C013,Valentina Morales,Female,Jewish,Native,Hispanic,18-24,B.S. Data Science,Tier 3,0,Agile Leadership; System Design; Team Mentorship; Cloud Architecture; Python; Java; Budgets,85,137,4,178,Engineering Manager
+C014,Sophie Muller,Female,Muslim,Native,White,45-54,B.S. Computer Science,Tier 3,9,Go; Kubernetes; Terraform; Docker; AWS; Prometheus; CI/CD pipelines,100,820,3,192,Cloud DevOps & Platform Engineer
+C015,Aaliyah Harris,Female,Christian,Native,Black,25-34,B.S. Data Science,Tier 3,4,Python; PyTorch; TensorFlow; Distributed Systems; MLOps; CUDA; SQL,100,217,2,162,Senior ML Engineer
+C016,Erik Lindqvist,Male,Jewish,Fluent,White,18-24,M.S. Artificial Intelligence,Tier 1,1,SQL; Python; Tableau; PowerBI; Pandas; Data Warehousing; Snowflake,76,159,3,103,Data Analyst / BI Specialist
+C017,Rohan Gupta,Male,Hindu,Basic,Asian,45-54,M.S. Computer Science,Tier 2,11,JavaScript; TypeScript; React; Node.js; PostgreSQL; GraphQL; Docker,79,476,2,192,Full Stack Software Engineer
+C018,Malik Jackson,Male,Muslim,Native,Black,45-54,M.S. Software Engineering,Tier 2,12,JavaScript; TypeScript; React; Node.js; PostgreSQL; GraphQL; Docker,100,694,1,200,Full Stack Software Engineer
+C019,Ebony Jackson,Female,Jewish,Native,Black,25-34,B.S. Computer Science,Tier 3,8,JavaScript; TypeScript; React; Node.js; PostgreSQL; GraphQL; Docker,92,742,1,176,Full Stack Software Engineer
+C020,Zayd Karim,Male,Hindu,Basic,Middle Eastern,35-44,M.S. Statistics,Tier 3,4,JavaScript; TypeScript; React; Node.js; PostgreSQL; GraphQL; Docker,95,256,2,151,Full Stack Software Engineer
+C021,Emily Davis,Female,Muslim,Native,White,35-44,Ph.D. Computer Science,Tier 2,14,Agile Leadership; System Design; Team Mentorship; Cloud Architecture; Python; Java; Budgets,94,406,4,275,Engineering Manager
+C022,Mariam Karim,Female,Catholic,Fluent,Middle Eastern,18-24,M.S. Software Engineering,Tier 3,1,Python; PyTorch; TensorFlow; Distributed Systems; MLOps; CUDA; SQL,96,241,1,158,Senior ML Engineer
+C023,Michael Brown,Male,Jewish,Native,White,35-44,M.S. Computer Science,Tier 1,4,JavaScript; TypeScript; React; Node.js; PostgreSQL; GraphQL; Docker,89,68,2,135,Full Stack Software Engineer
+C024,Ebony Jackson,Female,Catholic,Basic,Black,25-34,M.S. Artificial Intelligence,Tier 3,2,Agile Leadership; System Design; Team Mentorship; Cloud Architecture; Python; Java; Budgets,95,219,2,185,Engineering Manager
+C025,Yasmin Demir,Female,Christian,Native,Middle Eastern,35-44,M.S. Artificial Intelligence,Tier 3,5,JavaScript; TypeScript; React; Node.js; PostgreSQL; GraphQL; Docker,100,31,4,152,Full Stack Software Engineer
+C026,Kenji Sato,Male,Hindu,Fluent,Asian,25-34,M.S. Statistics,Tier 3,5,Agile Leadership; System Design; Team Mentorship; Cloud Architecture; Python; Java; Budgets,93,389,2,205,Engineering Manager
+C027,Ebony Jackson,Female,Christian,Fluent,Black,35-44,M.S. Artificial Intelligence,Tier 2,4,Python; Flask; Git; SQLite; HTML/CSS; JavaScript; OOP Basics,100,77,4,89,Junior Software Developer
+C028,Sofia Rodriguez,Female,Jewish,Fluent,Hispanic,25-34,B.S. Data Science,Tier 1,8,Go; Kubernetes; Terraform; Docker; AWS; Prometheus; CI/CD pipelines,93,793,2,192,Cloud DevOps & Platform Engineer
+C029,Zayd Karim,Male,Hindu,Basic,Middle Eastern,45-54,B.S. Software Engineering,Tier 1,12,Python; PyTorch; TensorFlow; Distributed Systems; MLOps; CUDA; SQL,86,741,0,220,Senior ML Engineer
+C030,Isaiah Brooks,Male,Agnostic,Native,Black,18-24,M.S. Statistics,Tier 2,0,Python; PyTorch; TensorFlow; Distributed Systems; MLOps; CUDA; SQL,91,739,2,140,Senior ML Engineer
+C031,Layla Hassan,Female,Christian,Native,Middle Eastern,18-24,B.S. Data Science,Tier 1,2,Agile Leadership; System Design; Team Mentorship; Cloud Architecture; Python; Java; Budgets,72,436,1,191,Engineering Manager
+C032,Sarah Johnson,Female,Hindu,Native,White,25-34,Ph.D. Computer Science,Tier 1,2,Python; Flask; Git; SQLite; HTML/CSS; JavaScript; OOP Basics,73,832,4,82,Junior Software Developer
+C033,Bilal Zahra,Male,Muslim,Basic,Middle Eastern,25-34,B.S. Software Engineering,Tier 2,2,Transformers; Multi-Modal AI; Reinforcement Learning; PyTorch; C++; Distributed GPU Training,89,608,2,197,Principal AI Research Scientist
+C034,Chloe Wright,Female,Hindu,Basic,White,25-34,M.S. Statistics,Tier 2,5,Python; PyTorch; TensorFlow; Distributed Systems; MLOps; CUDA; SQL,88,463,4,182,Senior ML Engineer
+C035,Olivia Taylor,Female,Agnostic,Native,White,18-24,B.S. Computer Science,Tier 1,0,Transformers; Multi-Modal AI; Reinforcement Learning; PyTorch; C++; Distributed GPU Training,90,654,1,198,Principal AI Research Scientist
+C036,Isabella Fernandez,Female,Muslim,Basic,Hispanic,45-54,M.S. Statistics,Tier 2,7,Python; Flask; Git; SQLite; HTML/CSS; JavaScript; OOP Basics,77,158,2,116,Junior Software Developer
+C037,Malik Jackson,Male,Jewish,Basic,Black,45-54,B.S. Software Engineering,Tier 3,8,Python; Flask; Git; SQLite; HTML/CSS; JavaScript; OOP Basics,100,766,3,127,Junior Software Developer
+C038,Kofi Mensah,Male,Buddhist,Native,Black,25-34,M.S. Computer Science,Tier 3,6,Transformers; Multi-Modal AI; Reinforcement Learning; PyTorch; C++; Distributed GPU Training,93,313,4,237,Principal AI Research Scientist
+C039,Olivia Taylor,Female,Hindu,Fluent,White,25-34,M.S. Software Engineering,Tier 3,5,Agile Leadership; System Design; Team Mentorship; Cloud Architecture; Python; Java; Budgets,86,179,4,202,Engineering Manager
+C040,Elena Rostova,Female,Catholic,Native,White,25-34,Ph.D. Computer Science,Tier 1,3,Python; Flask; Git; SQLite; HTML/CSS; JavaScript; OOP Basics,89,416,1,90,Junior Software Developer
