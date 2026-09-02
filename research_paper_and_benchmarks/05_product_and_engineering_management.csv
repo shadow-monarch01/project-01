@@ -1,0 +1,5 @@
+candidate_id,name,gender,language,age_group,education,university_tier,experience_years,interview_score,expected_role,technical_skills,certifications_count,previous_salary
+MGT_001,Lakshmi Narayanan,Female,Basic,45-54,M.B.A. & B.Tech,Tier-2 Regional,14,91,Director of Engineering,Strategic Roadmaps; Org Scaling; Agile Coaching; Cloud Governance; OKRs; Budgets,4,185000
+MGT_002,Harrison Forde,Male,Fluent,35-44,M.B.A. & B.Tech,Tier-1 Elite,14,91,Director of Engineering,Strategic Roadmaps; Org Scaling; Agile Coaching; Cloud Governance; OKRs; Budgets,4,185000
+MGT_003,Kwame Mensah,Male,Basic,35-44,B.S. Software Engineering,Tier-2 Regional,8,86,Technical Product Manager,Product Discovery; Jira; SQL; User Story Mapping; API Design; Analytics,2,135000
+MGT_004,William Montgomery,Male,Fluent,25-34,B.S. Software Engineering,Tier-1 Elite,8,86,Technical Product Manager,Product Discovery; Jira; SQL; User Story Mapping; API Design; Analytics,2,135000

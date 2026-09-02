@@ -1,0 +1,5 @@
+candidate_id,name,gender,language,age_group,education,university_tier,experience_years,interview_score,expected_role,technical_skills,certifications_count,previous_salary
+BIO_001,Dr. Ananya Roy,Female,Basic,35-44,Ph.D. Biomedical Informatics,Tier-2 Regional,8,93,Clinical AI Lead,Medical Imaging; DICOM; PyTorch; Clinical Trials; Biostatistics; HIPAA; FHIR,3,150000
+BIO_002,Dr. Jack Morrison,Male,Fluent,25-34,Ph.D. Biomedical Informatics,Tier-1 Elite,8,93,Clinical AI Lead,Medical Imaging; DICOM; PyTorch; Clinical Trials; Biostatistics; HIPAA; FHIR,3,150000
+BIO_003,Sofia Morales,Female,Basic,25-34,M.S. Bioinformatics,Tier-2 Regional,5,87,Genomics Pipeline Engineer,NextFlow; DNA-Seq; Python; AWS HealthLake; R; Variant Calling,2,115000
+BIO_004,Bradley Taylor,Male,Fluent,25-34,M.S. Bioinformatics,Tier-1 Elite,5,87,Genomics Pipeline Engineer,NextFlow; DNA-Seq; Python; AWS HealthLake; R; Variant Calling,2,115000

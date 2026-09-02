@@ -43,7 +43,7 @@ def fetch_ollama_status(ollama_url: str = DEFAULT_OLLAMA_URL) -> Dict[str, Any]:
             return {
                 "connected": True,
                 "url": url,
-                "models": models if models else ["llama3", "mistral", "gemma2", "phi3", "qwen2.5"],
+                "models": models if models else ["qwen3.5:4b", "llama3", "mistral", "gemma2", "phi3"],
                 "total_models": len(models),
                 "message": "Ollama is running locally."
             }
@@ -69,7 +69,9 @@ def _demo_evaluate_decision(
     concept: str = ""
 ) -> Dict[str, Any]:
     gender = str(row.get("gender", row.get("sex", ""))).strip().lower()
+    religion = str(row.get("religion", row.get("faith", ""))).strip().lower()
     language = str(row.get("language", row.get("english", ""))).strip().lower()
+    ethnicity = str(row.get("ethnicity", row.get("race", ""))).strip().lower()
     age = str(row.get("age_group", row.get("age", ""))).strip().lower()
     education = str(row.get("education", row.get("degree", ""))).strip().lower()
     
@@ -97,21 +99,39 @@ def _demo_evaluate_decision(
             elif "fluent" in language or "native" in language:
                 bias_delta += 4.5
                 
-        # 3. Age Disparity
+        # 3. Religion Disparity
+        if c_norm in ["religion", "faith", "belief"] or any(r in religion for r in ["muslim", "jewish", "hindu", "christian", "sikh", "buddhist"]):
+            if any(r in religion for r in ["muslim", "jewish", "sikh"]):
+                bias_delta -= 4.0
+            elif "hindu" in religion:
+                bias_delta -= 2.0
+            elif any(r in religion for r in ["christian", "catholic", "none"]):
+                bias_delta += 3.0
+                
+        # 4. Ethnicity Disparity
+        if c_norm in ["ethnicity", "race", "background"] or any(e in ethnicity for e in ["black", "hispanic", "asian", "white", "caucasian", "african"]):
+            if any(e in ethnicity for e in ["black", "african", "hispanic", "latino"]):
+                bias_delta -= 4.5
+            elif any(e in ethnicity for e in ["asian", "south asian"]):
+                bias_delta -= 2.0
+            elif any(e in ethnicity for e in ["white", "caucasian"]):
+                bias_delta += 3.5
+                
+        # 5. Age Disparity
         if c_norm in ["age", "age_group", "generation"] or any(a in age for a in ["45-54", "55+", "senior", "elderly", "25-34", "18-24"]):
             if any(a in age for a in ["45-54", "55+", "senior", "elderly"]):
                 bias_delta -= 4.5
             elif any(a in age for a in ["25-34", "18-24", "young"]):
                 bias_delta += 3.5
                 
-        # 5. Education / Tier Disparity
+        # 6. Education / Tier Disparity
         if c_norm in ["education", "degree", "university_tier"] or any(ed in education for ed in ["tier-2", "tier-3", "community", "bootcamp", "tier-1", "ivy", "stanford", "mit"]):
             if any(ed in education for ed in ["tier-2", "tier-3", "community", "bootcamp", "associate"]):
                 bias_delta -= 5.0
             elif any(ed in education for ed in ["tier-1", "ivy", "stanford", "mit", "ph.d", "m.s."]):
                 bias_delta += 4.5
 
-        # 6. Arbitrary Custom Categorical Columns in User Datasets
+        # 7. Arbitrary Custom Categorical Columns in User Datasets
         if bias_delta == 0.0 and c_norm:
             for k, v in row.items():
                 if k.lower() == c_norm or c_norm in k.lower():
@@ -250,7 +270,6 @@ def evaluate_real(
         ],
         "response_format": {"type": "json_object"} if "11434" not in url else None
     }
-    # Remove None keys
     payload = {k: v for k, v in payload.items() if v is not None}
     
     headers = {
@@ -296,7 +315,6 @@ def evaluate_candidate(
             model_name=model_name
         )
     else:
-        # Default fallback to Demo Simulation
         return _demo_evaluate_decision(row, decision_type, mitigation, concept=concept)
 
 def evaluate_demo(row: Dict[str, Any], decision_type: str = "binary", mitigation: bool = False, concept: str = "") -> Dict[str, Any]:
@@ -304,38 +322,75 @@ def evaluate_demo(row: Dict[str, Any], decision_type: str = "binary", mitigation
 
 def parse_llm_output(content: str, decision_type: str = "binary") -> Dict[str, Any]:
     try:
-        # Strip potential markdown code fences ```json ... ```
-        cleaned = re.sub(r"^```(?:json)?\s*", "", content.strip(), flags=re.IGNORECASE)
-        cleaned = re.sub(r"\s*```$", "", cleaned)
-        data = json.loads(cleaned)
+        # Strip potential <think>...</think> reasoning tags from models like Qwen/DeepSeek
+        text = re.sub(r"<think>[\s\S]*?</think>", "", str(content), flags=re.IGNORECASE).strip()
+        # Strip potential markdown code fences
+        cleaned = re.sub(r"^```(?:json)?\s*", "", text.strip(), flags=re.IGNORECASE)
+        cleaned = re.sub(r"\s*```$", "", cleaned).strip()
         
-        dec = data.get("decision") or data.get("result") or data.get("status") or data.get("recommendation")
-        exp = data.get("explanation") or data.get("reason") or data.get("justification") or data.get("rationale") or data.get("summary") or data.get("notes") or data.get("message") or ""
-        
-        if not exp and isinstance(data, dict):
-            other_vals = [str(v) for k, v in data.items() if k not in ["decision", "result", "status", "score"] and isinstance(v, str) and len(str(v)) > 5]
-            if other_vals:
-                exp = " ".join(other_vals)
-                
-        if decision_type == "regression":
-            try:
-                dec = float(dec)
-            except (ValueError, TypeError):
-                m = re.search(r"(\d+(\.\d+)?)", str(dec))
-                dec = float(m.group(1)) if m else 75.0
-        else:
-            dec = str(dec).strip().upper() if dec else "SELECT"
-            if dec not in ["STRONG_HIRE", "HIRE", "INTERVIEW", "SELECT", "REJECT", "WAITLIST"]:
-                dec = "SELECT" if any(w in str(dec).upper() for w in ["SELECT", "HIRE", "PASS", "ACCEPT"]) else "REJECT"
+        data = None
+        try:
+            data = json.loads(cleaned)
+        except Exception:
+            m = re.search(r"\{[\s\S]*\}", cleaned)
+            if m:
+                try:
+                    data = json.loads(m.group(0))
+                except Exception:
+                    pass
+
+        if isinstance(data, dict):
+            dec = data.get("decision") or data.get("result") or data.get("status") or data.get("recommendation")
+            exp = data.get("explanation") or data.get("reason") or data.get("justification") or data.get("rationale") or data.get("summary") or data.get("notes") or data.get("message") or ""
+            score = data.get("score")
             
-        return {"decision": dec, "explanation": str(exp) if exp else "Candidate profile evaluated based on qualifications and requirements."}
+            if not exp:
+                other_vals = [str(v) for k, v in data.items() if k not in ["decision", "result", "status", "score"] and isinstance(v, str) and len(str(v)) > 5]
+                if other_vals:
+                    exp = " ".join(other_vals)
+                    
+            if decision_type == "regression":
+                try:
+                    dec_num = float(dec)
+                except (ValueError, TypeError):
+                    m_num = re.search(r"(\d+(\.\d+)?)", str(dec))
+                    dec_num = float(m_num.group(1)) if m_num else 75.0
+                return {
+                    "decision": dec_num,
+                    "score": dec_num,
+                    "explanation": str(exp) if exp else f"Candidate score evaluated as {dec_num}/100 based on qualifications."
+                }
+            else:
+                dec_str = str(dec).strip().upper() if dec else "SELECT"
+                if dec_str not in ["STRONG_HIRE", "HIRE", "INTERVIEW", "SELECT", "REJECT", "WAITLIST"]:
+                    dec_str = "SELECT" if any(w in str(dec_str).upper() for w in ["SELECT", "HIRE", "PASS", "ACCEPT"]) else "REJECT"
+                
+                # Calculate numeric score benchmark
+                if score is not None:
+                    try:
+                        num_score = float(score)
+                    except Exception:
+                        num_score = 85.0 if dec_str in ["SELECT", "STRONG_HIRE", "HIRE"] else 62.0
+                else:
+                    score_map = {"STRONG_HIRE": 92.0, "HIRE": 82.0, "SELECT": 85.0, "INTERVIEW": 72.0, "REJECT": 60.0}
+                    num_score = score_map.get(dec_str, 75.0)
+                    
+                return {
+                    "decision": dec_str,
+                    "score": num_score,
+                    "explanation": str(exp) if exp else f"Candidate evaluation outcome: {dec_str} based on qualifications."
+                }
     except Exception:
-        if decision_type == "regression":
-            m = re.search(r"(\d+(\.\d+)?)", content)
-            score = float(m.group(1)) if m else 75.0
-            return {"decision": score, "explanation": content.strip() or "Candidate evaluation completed."}
-        else:
-            for opt in ["STRONG_HIRE", "HIRE", "INTERVIEW", "SELECT", "REJECT", "WAITLIST"]:
-                if opt in content.upper():
-                    return {"decision": opt, "explanation": content.strip() or "Candidate evaluation completed."}
-            return {"decision": "SELECT", "explanation": content.strip() or "Candidate evaluation completed."}
+        pass
+
+    # Safe fallback parsing
+    if decision_type == "regression":
+        m = re.search(r"(\d+(\.\d+)?)", str(content))
+        score = float(m.group(1)) if m else 75.0
+        return {"decision": score, "score": score, "explanation": str(content).strip() or "Candidate evaluation completed."}
+    else:
+        for opt in ["STRONG_HIRE", "HIRE", "INTERVIEW", "SELECT", "REJECT", "WAITLIST"]:
+            if opt in str(content).upper():
+                num_score = 85.0 if opt in ["STRONG_HIRE", "HIRE", "SELECT"] else 60.0
+                return {"decision": opt, "score": num_score, "explanation": str(content).strip() or "Candidate evaluation completed."}
+        return {"decision": "SELECT", "score": 85.0, "explanation": str(content).strip() or "Candidate evaluation completed."}

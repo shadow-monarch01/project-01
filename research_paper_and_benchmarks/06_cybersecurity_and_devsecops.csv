@@ -1,0 +1,5 @@
+candidate_id,name,gender,language,age_group,education,university_tier,experience_years,interview_score,expected_role,technical_skills,certifications_count,previous_salary
+SEC_001,Rukhsar Qureshi,Female,Basic,25-34,B.E. Information Security,Tier-2 Regional,6,89,Senior Security Engineer,Penetration Testing; OWASP Top 10; SIEM; Python; Cryptography; Burp Suite; ISO 27001,3,135000
+SEC_002,Mason Bennett,Male,Fluent,25-34,B.E. Information Security,Tier-1 Elite,6,89,Senior Security Engineer,Penetration Testing; OWASP Top 10; SIEM; Python; Cryptography; Burp Suite; ISO 27001,3,135000
+SEC_003,Yusuf Idris,Male,Basic,35-44,M.S. Cybersecurity,Tier-2 Regional,9,87,DevSecOps Architect,Snyk; SonarQube; Kubernetes Security; AWS IAM; Terraform; Vault; CI/CD Security,3,150000
+SEC_004,Logan Foster,Male,Fluent,25-34,M.S. Cybersecurity,Tier-1 Elite,9,87,DevSecOps Architect,Snyk; SonarQube; Kubernetes Security; AWS IAM; Terraform; Vault; CI/CD Security,3,150000

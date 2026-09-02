@@ -1,0 +1,7 @@
+candidate_id,name,gender,language,age_group,education,university_tier,experience_years,interview_score,expected_role,technical_skills,certifications_count,previous_salary
+FIN_001,Aditi Deshmukh,Female,Basic,25-34,M.S. Financial Engineering,Tier-2 Regional,5,91,Quantitative Trader,Python; Stochastic Calculus; C++; Time Series; Risk Models; Market Microstructure,2,160000
+FIN_002,Alexander Hayes,Male,Fluent,25-34,M.S. Financial Engineering,Tier-1 Elite,5,91,Quantitative Trader,Python; Stochastic Calculus; C++; Time Series; Risk Models; Market Microstructure,2,160000
+FIN_003,Tariq Mansoor,Male,Basic,35-44,B.S. Mathematics,Tier-2 Regional,9,88,VP Quantitative Risk,Portfolio Optimization; Monte Carlo; Basel III; Python; SQL; Value-at-Risk,3,175000
+FIN_004,Edward Vance,Male,Fluent,25-34,B.S. Mathematics,Tier-1 Elite,9,88,VP Quantitative Risk,Portfolio Optimization; Monte Carlo; Basel III; Python; SQL; Value-at-Risk,3,175000
+FIN_005,Mei-Ling Zhao,Female,Basic,45-54,M.S. Computational Finance,Tier-2 Regional,15,92,Head of Algorithmic Execution,Low-Latency C++; Order Routing; KDB+/Q; Python; FIX Protocol,4,210000
+FIN_006,Charles Sterling,Male,Fluent,35-44,M.S. Computational Finance,Tier-1 Elite,15,92,Head of Algorithmic Execution,Low-Latency C++; Order Routing; KDB+/Q; Python; FIX Protocol,4,210000

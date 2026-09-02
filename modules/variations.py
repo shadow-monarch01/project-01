@@ -8,17 +8,23 @@ from typing import Dict, Any, List, Optional, Tuple
 
 CONCEPT_COLUMN_MAP = {
     "gender": ["gender", "sex"],
+    "religion": ["religion", "faith", "belief", "creed"],
     "language": ["language", "english", "language proficiency", "english proficiency", "accent"],
+    "ethnicity": ["ethnicity", "race", "background", "caste", "nationality", "origin"],
     "age": ["age_group", "age", "generation", "age_bracket"],
-    "education": ["education", "degree", "university_tier", "education_level"],
+    "education": ["education", "degree", "education_level"],
+    "university_tier": ["university_tier", "tier", "college_tier", "institution_tier"],
     "location": ["location", "city", "region", "country", "state"]
 }
 
 DEFAULT_PAIRS = {
     "gender": ("Male", "Female"),
+    "religion": ("Hindu", "Christian"),
     "language": ("Fluent", "Basic"),
+    "ethnicity": ("Asian", "White"),
     "age": ("25-34", "35-44"),
-    "education": ("B.S. Computer Science", "Ph.D. Computer Science"),
+    "education": ("B.Tech Computer Science", "M.S. Computer Science"),
+    "university_tier": ("Tier-2 Regional", "Tier-1 Elite"),
     "location": ("Metropolitan", "Rural")
 }
 
@@ -46,13 +52,12 @@ def get_all_dataset_concepts(df: pd.DataFrame) -> List[Dict[str, Any]]:
                     seen_cols.add(actual_col)
                 break
 
-    # 2. Add any other categorical/string columns in user's dataset with 2 to 20 unique values
+    # 2. Add any other categorical/string columns in user's dataset with 2 to 25 unique values
     for col in df.columns:
         if col in seen_cols:
             continue
-        # Skip purely numeric continuous columns, IDs, skills, and excluded demographics (ethnicity/race/religion)
         c_lower = col.lower()
-        if c_lower in ["candidate_id", "id", "name", "candidate_name", "interview_score", "score", "experience_years", "salary", "cluster", "ethnicity", "race", "ethnic_group", "religion", "faith", "creed", "belief", "technical_skills", "skills"]:
+        if c_lower in ["candidate_id", "id", "name", "candidate_name", "interview_score", "score", "experience_years", "salary", "cluster", "technical_skills", "skills"]:
             continue
         
         vals = get_available_values(df, col)
@@ -119,11 +124,21 @@ def default_pair(df: pd.DataFrame, concept: str) -> Optional[Tuple[str, str, str
         return column, val_a, val_b
     return None
 
-def make_variation(row: pd.Series, concept: str, value: str, column: Optional[str] = None) -> Tuple[Optional[pd.Series], Optional[str]]:
-    new_row = row.copy()
-    col = column or resolve_column_for_concept(pd.DataFrame([row]), concept)
-    if not col or col not in new_row.index:
-        return None, f"Target column for concept '{concept}' not found in candidate record."
+def make_variation(row: Union[pd.Series, Dict[str, Any]], concept: str, value: str, column: Optional[str] = None) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+    if isinstance(row, pd.Series):
+        new_row = row.to_dict()
+    else:
+        new_row = dict(row)
+
+    df_dummy = pd.DataFrame([new_row])
+    col = column or resolve_column_for_concept(df_dummy, concept)
+    if not col or col not in new_row:
+        # Fallback to direct key
+        col = concept.lower()
+        if col not in new_row:
+            new_row[col] = value
+            return new_row, None
+            
     new_row[col] = value
     return new_row, None
 
@@ -133,7 +148,7 @@ def generate_counterfactual_dataset(
     value_a: str,
     value_b: str,
     column: Optional[str] = None
-) -> Tuple[List[pd.Series], List[pd.Series]]:
+) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
     col = column or resolve_column_for_concept(df, concept)
     if not col or col not in df.columns:
         raise ValueError(f"Could not resolve valid dataset column for concept '{concept}' in dataset.")

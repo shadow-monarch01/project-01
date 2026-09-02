@@ -32,7 +32,10 @@ def mcnemar_test(orig: List[str], mod: List[str]) -> Dict[str, Any]:
             "method": "McNemar (Exact)",
             "contingency_table": {"a": a, "b": b, "c": c, "d": d},
             "discordant_count": 0,
-            "disagreement_rate": 0.0
+            "disagreement_rate": 0.0,
+            "significant": False,
+            "is_significant": False,
+            "alpha": 0.05
         }
 
     if total_discordant < 25:
@@ -44,18 +47,22 @@ def mcnemar_test(orig: List[str], mod: List[str]) -> Dict[str, Any]:
         p_val = 1.0 - stats.chi2.cdf(stat, df=1)
         method = "McNemar Chi-Square (Continuity Corrected)"
 
+    is_sig = bool(p_val < 0.05)
     return {
         "statistic": round(float(stat), 4),
         "p_value": round(float(p_val), 5),
         "method": method,
         "contingency_table": {"a": a, "b": b, "c": c, "d": d},
         "discordant_count": total_discordant,
-        "disagreement_rate": round(total_discordant / max(1, len(orig)), 4)
+        "disagreement_rate": round(total_discordant / max(1, len(orig)), 4),
+        "significant": is_sig,
+        "is_significant": is_sig,
+        "alpha": 0.05
     }
 
 def multiclass_chi_square(orig: List[str], mod: List[str]) -> Dict[str, Any]:
     if len(orig) != len(mod) or len(orig) == 0:
-        return {"statistic": 0.0, "p_value": 1.0, "method": "Chi-Square (Empty)"}
+        return {"statistic": 0.0, "p_value": 1.0, "method": "Chi-Square (Empty)", "significant": False, "is_significant": False, "alpha": 0.05}
 
     categories = sorted(list(set([str(x) for x in orig + mod])))
     cat_to_idx = {c: i for i, c in enumerate(categories)}
@@ -67,6 +74,7 @@ def multiclass_chi_square(orig: List[str], mod: List[str]) -> Dict[str, Any]:
 
     changed_count = sum(str(o) != str(m) for o, m in zip(orig, mod))
     chi2_stat, p_val, dof, _ = stats.chi2_contingency(matrix + 1e-5)
+    is_sig = bool(p_val < 0.05)
 
     return {
         "statistic": round(float(chi2_stat), 4),
@@ -76,7 +84,10 @@ def multiclass_chi_square(orig: List[str], mod: List[str]) -> Dict[str, Any]:
         "changed_count": changed_count,
         "switch_rate": round(changed_count / max(1, len(orig)), 4),
         "categories": categories,
-        "transition_matrix": matrix.tolist()
+        "transition_matrix": matrix.tolist(),
+        "significant": is_sig,
+        "is_significant": is_sig,
+        "alpha": 0.05
     }
 
 def paired_regression_test(orig: List[Union[float, int]], mod: List[Union[float, int]]) -> Dict[str, Any]:
@@ -84,7 +95,7 @@ def paired_regression_test(orig: List[Union[float, int]], mod: List[Union[float,
         a = np.array([float(x) for x in orig])
         b = np.array([float(x) for x in mod])
     except (ValueError, TypeError):
-        return {"statistic": 0.0, "p_value": 1.0, "mean_difference": 0.0, "cohens_d": 0.0}
+        return {"statistic": 0.0, "p_value": 1.0, "mean_difference": 0.0, "cohens_d": 0.0, "significant": False, "is_significant": False, "alpha": 0.05}
 
     diffs = a - b
     n = len(diffs)
@@ -98,7 +109,10 @@ def paired_regression_test(orig: List[Union[float, int]], mod: List[Union[float,
             "std_difference": 0.0,
             "cohens_d": 0.0,
             "ci_95": [0.0, 0.0],
-            "method": "Paired t-test (No variance)"
+            "method": "Paired t-test (No variance)",
+            "significant": False,
+            "is_significant": False,
+            "alpha": 0.05
         }
 
     mean_diff = float(np.mean(diffs))
@@ -115,6 +129,7 @@ def paired_regression_test(orig: List[Union[float, int]], mod: List[Union[float,
         t_stat, p_val, cohens_d = 0.0, 1.0, 0.0
         ci_lower, ci_upper = mean_diff, mean_diff
 
+    is_sig = bool(p_val < 0.05)
     return {
         "statistic": round(float(t_stat), 4),
         "p_value": round(float(p_val), 5),
@@ -124,5 +139,8 @@ def paired_regression_test(orig: List[Union[float, int]], mod: List[Union[float,
         "cohens_d": round(float(cohens_d), 3),
         "ci_95": [ci_lower, ci_upper],
         "method": "Paired Student's t-test",
-        "sample_size": n
+        "sample_size": n,
+        "significant": is_sig,
+        "is_significant": is_sig,
+        "alpha": 0.05
     }

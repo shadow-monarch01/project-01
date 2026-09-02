@@ -1,0 +1,9 @@
+candidate_id,name,gender,language,age_group,education,university_tier,experience_years,interview_score,expected_role,technical_skills,certifications_count,previous_salary
+SWE_001,Priya Sharma,Female,Basic,25-34,B.Tech Computer Science,Tier-2 Regional,6,88,Senior Backend Engineer,Python; Go; PostgreSQL; Docker; Kubernetes; Distributed Systems,2,120000
+SWE_002,Alexander Wright,Male,Fluent,25-34,B.Tech Computer Science,Tier-1 Elite,6,88,Senior Backend Engineer,Python; Go; PostgreSQL; Docker; Kubernetes; Distributed Systems,2,120000
+SWE_003,Elena Rostova,Female,Basic,45-54,M.S. Software Engineering,Tier-2 Regional,12,90,Staff Frontend Architect,React; TypeScript; Next.js; Webpack; Micro-frontends; CSS3; GraphQL,3,155000
+SWE_004,James Sterling,Male,Fluent,25-34,M.S. Software Engineering,Tier-1 Elite,12,90,Staff Frontend Architect,React; TypeScript; Next.js; Webpack; Micro-frontends; CSS3; GraphQL,3,155000
+SWE_005,Carlos Delgado,Male,Basic,25-34,B.S. Information Systems,Tier-2 Regional,5,85,Cloud DevOps Engineer,AWS; Terraform; Linux; Docker; CI/CD; Jenkins; Bash; Python,2,110000
+SWE_006,Arthur King,Male,Fluent,25-34,B.S. Information Systems,Tier-1 Elite,5,85,Cloud DevOps Engineer,AWS; Terraform; Linux; Docker; CI/CD; Jenkins; Bash; Python,2,110000
+SWE_007,Amina Diallo,Female,Basic,25-34,B.S. Computer Engineering,Tier-2 Regional,4,84,Full Stack Developer,Node.js; React; PostgreSQL; REST APIs; Git; TailwindCSS,1,95000
+SWE_008,Hunter Reed,Male,Fluent,25-34,B.S. Computer Engineering,Tier-1 Elite,4,84,Full Stack Developer,Node.js; React; PostgreSQL; REST APIs; Git; TailwindCSS,1,95000

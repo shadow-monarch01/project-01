@@ -1,34 +1,36 @@
 @echo off
-title AI Hiring System - Bias Detection & Mitigation
+setlocal
 cd /d "%~dp0"
 
-echo ======================================================================
-echo   AI Hiring System - Bias Detection ^& Explanation Faithfulness
-echo ======================================================================
+title AI Hiring Intelligence & Bias Mitigation System
+
 echo.
-echo Locating Python environment...
+echo ============================================================
+echo   AI Hiring Intelligence ^& Bias Mitigation System
+echo ============================================================
+echo.
 
-set PYTHON_EXE=python
-
-if exist ".venv\Scripts\python.exe" (
-    set PYTHON_EXE=.venv\Scripts\python.exe
-    echo Using local .venv
-) else if exist "..\llm_bias_detection_project\.venv\Scripts\python.exe" (
-    set PYTHON_EXE=..\llm_bias_detection_project\.venv\Scripts\python.exe
-    echo Using desktop virtual environment
-) else if exist "C:\Users\Ashok kumar S\Desktop\llm_bias_detection_project\.venv\Scripts\python.exe" (
-    set PYTHON_EXE=C:\Users\Ashok kumar S\Desktop\llm_bias_detection_project\.venv\Scripts\python.exe
-    echo Using desktop virtual environment
+if not exist ".venv\Scripts\python.exe" (
+    echo ERROR: Virtual environment not found.
+    echo.
+    echo Expected:
+    echo %CD%\.venv\Scripts\python.exe
+    echo.
+    echo Create it with:
+    echo python -m venv .venv
+    echo.
+    pause
+    exit /b 1
 )
 
-echo Starting FastAPI Web Server on http://127.0.0.1:8000 ...
-echo Opening web application in your browser...
+echo Starting FastAPI server...
+echo.
+echo Dashboard: http://127.0.0.1:8000
+echo Press CTRL+C to stop the server.
 echo.
 
-start http://127.0.0.1:8000
-
-"%PYTHON_EXE%" -m uvicorn app:app --host 127.0.0.1 --port 8000 --reload
+".venv\Scripts\python.exe" -m uvicorn app:app --host 127.0.0.1 --port 8000
 
 echo.
-echo Hiring System server stopped.
+echo Server stopped.
 pause

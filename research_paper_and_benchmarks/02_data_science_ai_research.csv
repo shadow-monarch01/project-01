@@ -1,0 +1,7 @@
+candidate_id,name,gender,language,age_group,education,university_tier,experience_years,interview_score,expected_role,technical_skills,certifications_count,previous_salary
+AI_001,Dr. Sunita Devi,Female,Basic,35-44,Ph.D. Machine Learning,Tier-2 Regional,7,94,Principal AI Scientist,PyTorch; Transformers; LLM Fine-Tuning; Distributed Training; CUDA; Python,4,175000
+AI_002,Dr. Lucas Sterling,Male,Fluent,25-34,Ph.D. Machine Learning,Tier-1 Elite,7,94,Principal AI Scientist,PyTorch; Transformers; LLM Fine-Tuning; Distributed Training; CUDA; Python,4,175000
+AI_003,Fatima Al-Sayed,Female,Basic,25-34,M.S. Data Science,Tier-2 Regional,4,89,Computer Vision Engineer,OpenCV; PyTorch; Object Detection; TensorRT; C++; Python,2,130000
+AI_004,Connor Walsh,Male,Fluent,25-34,M.S. Data Science,Tier-1 Elite,4,89,Computer Vision Engineer,OpenCV; PyTorch; Object Detection; TensorRT; C++; Python,2,130000
+AI_005,Zubair Mahmood,Male,Basic,45-54,Ph.D. Statistics,Tier-2 Regional,14,91,Director of Data Science,Statistical Modeling; Bayesian Inference; A/B Testing; Team Leadership; Python; R,3,190000
+AI_006,David Miller,Male,Fluent,35-44,Ph.D. Statistics,Tier-1 Elite,14,91,Director of Data Science,Statistical Modeling; Bayesian Inference; A/B Testing; Team Leadership; Python; R,3,190000

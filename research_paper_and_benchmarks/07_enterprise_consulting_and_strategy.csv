@@ -1,0 +1,5 @@
+candidate_id,name,gender,language,age_group,education,university_tier,experience_years,interview_score,expected_role,technical_skills,certifications_count,previous_salary
+CON_001,Priya Raman,Female,Basic,25-34,M.B.A.,Tier-2 Regional,5,90,Senior Strategy Consultant,Market Entry; Financial Modeling; M&A Diligence; Tableau; Python; Client Advisory,2,140000
+CON_002,Charles Sterling III,Male,Fluent,25-34,M.B.A.,Tier-1 Elite,5,90,Senior Strategy Consultant,Market Entry; Financial Modeling; M&A Diligence; Tableau; Python; Client Advisory,2,140000
+CON_003,Fatima Nour,Female,Basic,35-44,M.S. Operations Research,Tier-2 Regional,8,88,Operations Transformation Lead,Supply Chain Optimization; Lean Six Sigma; SAP; Cost Reduction; Process Automation,3,150000
+CON_004,Spencer Brooks,Male,Fluent,25-34,M.S. Operations Research,Tier-1 Elite,8,88,Operations Transformation Lead,Supply Chain Optimization; Lean Six Sigma; SAP; Cost Reduction; Process Automation,3,150000

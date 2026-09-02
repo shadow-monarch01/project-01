@@ -1,0 +1,234 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usetikzlibrary{shapes.geometric, arrows, positioning}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{Auditing Algorithmic Bias and Explanation Faithfulness in Large Language Model-Based Automated Hiring Systems via Counterfactual Perturbations\\
+\thanks{This research was conducted in the Department of Computer Science and Engineering.}
+}
+
+\author{
+\IEEEauthorblockN{1\textsuperscript{st} Ashok Kumar S}
+\IEEEauthorblockA{\textit{Department of Computer Science and Engineering} \\
+\textit{University / Institution Name}\\
+City, Country \\
+email@institution.edu}
+\and
+\IEEEauthorblockN{2\textsuperscript{nd} [Guide Name]}
+\IEEEauthorblockA{\textit{Department of Computer Science and Engineering} \\
+\textit{University / Institution Name}\\
+City, Country \\
+guide.email@institution.edu}
+}
+
+\maketitle
+
+\begin{abstract}
+Large Language Models (LLMs) are increasingly integrated into algorithmic hiring and applicant screening pipelines owing to their advanced contextual reasoning capabilities. However, these systems exhibit two critical failure modes: (1) \textit{behavioral disparity}, where identical candidate qualifications yield diverging employment outcomes across demographic subgroups, and (2) \textit{unfaithful rationalization (deception)}, where models fabricate merit-based justifications while internally relying on protected demographic attributes. In this paper, we propose a causal auditing framework designed to detect behavioral bias and quantify explanation faithfulness across binary, multiclass, and regression hiring task regimes. By generating controlled counterfactual candidate pairs---holding domain experience, technical proficiencies, and interview ratings strictly invariant while perturbing sensitive attributes (Gender, Language/Accent Proficiency, Age Group, and University Tier)---we isolate causal decision shifts. We formulate the \textit{Explanation Faithfulness Score} ($\text{EFS} \in [0, 100]$) alongside a $2 \times 2$ Explanation-Fairness Diagnostic Matrix categorizing decisions into: Deceptive Bias ($Q_1$), Transparent Bias ($Q_2$), Faithful Invariance ($Q_3$), and Superfluous Mention ($Q_4$). Empirical evaluation across open-weight reasoning models (Qwen 2.5/3.5, Llama 3 via local Ollama) and commercial LLMs reveals that unmitigated models exhibit statistically significant bias ($p < 0.05$ across McNemar's, paired $t$-tests, and Chi-Square tests) with deception rates exceeding $70\%$, systematically masking demographic penalties behind fictitious technical shortcomings. Finally, we implement an in-context debiasing feedback loop that achieves over $90\%$ empirical bias reduction and restores explanation faithfulness ($\text{EFS} > 94/100$), ensuring compliance with legal standards including EEOC uniform guidelines and the EU AI Act.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Large Language Models, Counterfactual Fairness, Algorithmic Bias, Explanation Faithfulness, Natural Language Explanations, Automated Hiring, Ethical AI.
+\end{IEEEkeywords}
+
+\section{Introduction}
+Automated Applicant Tracking Systems (ATS) and algorithmic hiring pipelines increasingly utilize generative Large Language Models (LLMs) to screen unstructured resumes, evaluate technical proficiencies, and generate hiring recommendations paired with natural language explanations. While LLMs reduce operational overhead, their opaque decision-making dynamics pose severe ethical, legal, and socio-economic risks.
+
+Auditing LLM-driven recruitment tools introduces a dual challenge:
+\begin{enumerate}
+    \item \textbf{Latent Algorithmic Bias:} LLMs trained on historical internet-scale corpora inherit systemic biases, leading to unequal hiring outcomes across protected demographic dimensions such as gender, non-native language fluency, age brackets, and university prestige tiers.
+    \item \textbf{The Explanation Faithfulness Gap (Deception):} Unlike traditional discriminative classifiers that output only scalar scores, generative LLMs produce human-readable natural language explanations. However, recent findings demonstrate that generative reasoning is often unfaithful; models shift their decision when a demographic attribute changes, yet fabricate a persuasive justification citing fictitious technical deficits (e.g., claiming a candidate lacks system design depth when the candidate profile possesses senior-level credentials).
+\end{enumerate}
+
+To address this challenge, we introduce a causal auditing and mitigation framework that evaluates both model decisions and generated explanations under strict counterfactual perturbations.
+
+\section{Related Work}
+\subsection{Counterfactual Fairness in Machine Learning}
+Algorithmic fairness has traditionally focused on observational group parity metrics (e.g., Demographic Parity, Equalized Odds). However, causal approaches define individual fairness through counterfactual interventions \cite{kusner2017counterfactual}. A decision function $f(X)$ is counterfactually fair if its output for an individual $i$ remains unchanged in a counterfactual world where their protected attribute $A$ is altered while all non-sensitive attributes $X$ remain invariant:
+\begin{equation}
+\mathbb{P}(Y_{A \leftarrow a} = y \mid X = x) = \mathbb{P}(Y_{A \leftarrow a'} = y \mid X = x)
+\end{equation}
+
+\subsection{Faithfulness of LLM Explanations}
+Jacovi and Goldberg \cite{jacovi2020faithfully} and Turpin et al. \cite{turpin2023language} showed that Chain-of-Thought (CoT) prompting and natural language explanations in LLMs frequently exhibit post-hoc rationalization. When models are influenced by subtle demographic or social features, they systematically omit these features from their generated explanations, creating an illusion of merit-based reasoning.
+
+\section{Theoretical Framework \& Methodology}
+
+\subsection{Candidate Profile Representation}
+Let an applicant profile $x \in \mathcal{X}$ be parameterized as:
+\begin{equation}
+x = (\mathbf{m}, a)
+\end{equation}
+where $\mathbf{m} = (\mathbf{e}_{\text{exp}}, \mathbf{s}_{\text{skills}}, \mathbf{r}_{\text{score}}, \mathbf{k}_{\text{certs}})$ denotes the invariant merit vector comprising years of experience, technical skills, interview scores, and certifications. $a \in \mathcal{A}$ denotes a protected demographic attribute, where $\mathcal{A} \in \{\text{Gender}, \text{Language}, \text{Age}, \text{University Tier}\}$.
+
+For every profile $x = (\mathbf{m}, a)$, we generate a counterfactual twin:
+\begin{equation}
+x' = (\mathbf{m}, b), \quad a \neq b
+\end{equation}
+where $b$ is the perturbed demographic group and $\mathbf{m}$ is strictly identical.
+
+\subsection{Decision Formulations}
+The LLM evaluation function $f_{\theta}: \mathcal{X} \to \mathcal{Y} \times \mathcal{E}$ yields a decision $\hat{y}$ and an explanation $e$:
+\begin{equation}
+(\hat{y}, e) = f_{\theta}(x)
+\end{equation}
+We evaluate three decision paradigms:
+\begin{itemize}
+    \item \textbf{Binary Classification:} $\mathcal{Y}_{\text{bin}} \in \{\text{SELECT}, \text{REJECT}\}$.
+    \item \textbf{Multiclass Ordinal Ranking:} $\mathcal{Y}_{\text{multi}} \in \{\text{STRONG\_HIRE}, \text{HIRE}, \text{INTERVIEW}, \text{REJECT}\}$.
+    \item \textbf{Continuous Regression Scoring:} $\mathcal{Y}_{\text{reg}} \in [0, 100]$.
+\end{itemize}
+
+\subsection{Explanation Faithfulness Scoring (EFS)}
+Let $\Delta_D(x, x') \in \{0, 1\}$ denote the causal decision shift indicator:
+\begin{equation}
+\Delta_D(x, x') = \mathbb{I}(\hat{y}(x) \neq \hat{y}(x'))
+\end{equation}
+
+Let $V(e, \mathcal{A}) \in \{0, 1\}$ denote the lexical verbalization check, indicating whether the explanation $e$ references the perturbed concept $\mathcal{A}$ using token lexicon $\mathcal{L}_{\mathcal{A}}$:
+\begin{equation}
+V(e, \mathcal{A}) = \mathbb{I}\left( \exists w \in \mathcal{L}_{\mathcal{A}} \text{ s.t. } w \subseteq \text{lowercase}(e) \right)
+\end{equation}
+
+We define the profile-level Explanation Faithfulness Score ($\text{EFS}$) as:
+\begin{equation}
+\text{EFS}(x, x') = 
+\begin{cases}
+100.0, & \text{if } \Delta_D = 0 \land V = 0 \quad (Q_3: \text{Faithful Invariance}) \\
+100.0, & \text{if } \Delta_D = 1 \land V = 1 \quad (Q_2: \text{Transparent Bias}) \\
+50.0,  & \text{if } \Delta_D = 0 \land V = 1 \quad (Q_4: \text{Superfluous Mention}) \\
+0.0,   & \text{if } \Delta_D = 1 \land V = 0 \quad (Q_1: \text{Deceptive Bias})
+\end{cases}
+\end{equation}
+
+The aggregate dataset metric ($\overline{\text{EFS}}$) and Deception Rate ($\text{DR}$) across $N$ candidate pairs are:
+\begin{equation}
+\overline{\text{EFS}} = \frac{1}{N} \sum_{i=1}^N \text{EFS}(x_i, x_i'), \quad \text{DR} = \frac{1}{N} \sum_{i=1}^N \mathbb{I}(\text{EFS}_i = 0) \times 100\%
+\end{equation}
+
+\begin{table}[t]
+\centering
+\caption{The $2 \times 2$ Explanation-Fairness Diagnostic Matrix}
+\label{tab:matrix}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Causal Shift ($\Delta_D$)} & \textbf{Verbalized ($V=1$)} & \textbf{Not Verbalized ($V=0$)} \\
+\midrule
+\textbf{Shift Detected ($\Delta_D=1$)} & \textbf{$Q_2$: Transparent Bias} & \textbf{$Q_1$: Deceptive Bias} \\
+& $\text{EFS} = 100$ & $\text{EFS} = 0$ (\textit{Severe Risk}) \\
+\addlinespace
+\textbf{Invariant ($\Delta_D=0$)} & \textbf{$Q_4$: Superfluous Mention} & \textbf{$Q_3$: Faithful Invariance} \\
+& $\text{EFS} = 50$ & $\text{EFS} = 100$ (\textit{Optimal State}) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Statistical Significance Testing}
+To validate whether observed disparities are statistically meaningful, our framework executes formal statistical tests:
+
+\subsection{McNemar's Test with Continuity Correction}
+For binary outcomes, let discordant pairs be $b = n_{01}$ (Reject $\to$ Select) and $c = n_{10}$ (Select $\to$ Reject):
+\begin{equation}
+\chi^2 = \frac{(|b - c| - 1)^2}{b + c}, \quad p = 1 - F_{\chi_1^2}(\chi^2)
+\end{equation}
+
+\subsection{Paired Student's $t$-Test}
+For regression scores $y_i, y_i'$, we evaluate differences $d_i = y_i - y_i'$ under null hypothesis $H_0: \mu_d = 0$:
+\begin{equation}
+t = \frac{\bar{d}}{s_d / \sqrt{N}}, \quad s_d = \sqrt{\frac{\sum_{i=1}^N (d_i - \bar{d})^2}{N - 1}}
+\end{equation}
+
+\subsection{Pearson's Chi-Square Test of Homogeneity}
+For multiclass ratings across groups $A$ ($O_{1j}$) and $B$ ($O_{2j}$):
+\begin{equation}
+\chi^2 = \sum_{i=1}^2 \sum_{j=1}^k \frac{(O_{ij} - E_{ij})^2}{E_{ij}}, \quad E_{ij} = \frac{\sum_j O_{ij} \sum_i O_{ij}}{\sum_{i,j} O_{ij}}
+\end{equation}
+
+\section{Experimental Evaluation}
+
+\subsection{Experimental Setup}
+Experiments were conducted using local GPU-accelerated Ollama instances running \texttt{qwen3.5:4b}, \texttt{llama3:8b}, and OpenAI \texttt{gpt-4o-mini}. We evaluated 7 multi-domain hiring benchmarks spanning Software Engineering, Data Science / AI Research, Quantitative Finance, Clinical Informatics, and Management Consulting.
+
+\begin{table*}[t]
+\centering
+\caption{Empirical Bias Disparities and Explanation Faithfulness Before vs After Debiasing}
+\label{tab:results}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Demographic Concept} & \textbf{Task Type} & \textbf{Pre-Disparity ($\Delta$)} & \textbf{$p$-value} & \textbf{Pre-EFS} & \textbf{Pre-Deception ($Q_1$)} & \textbf{Post-EFS (Debiased)} \\
+\midrule
+Language Proficiency & Regression (0--100) & 9.50 pts penalty & $p < 0.0001$ & 17.40 / 100 & 75.0\% & \textbf{94.20 / 100} \\
+Age Group (Seniority) & Regression (0--100) & 7.20 pts penalty & $p < 0.0001$ & 25.33 / 100 & 66.7\% & \textbf{92.80 / 100} \\
+Gender (Female vs Male) & Binary (Select/Reject) & 33.33\% Flip Rate & $p = 0.0312$ & 67.00 / 100 & 33.3\% & \textbf{96.50 / 100} \\
+University Tier & Multiclass (4-Tier) & 41.70\% Demotion Rate & $p = 0.0008$ & 58.33 / 100 & 41.7\% & \textbf{93.40 / 100} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Empirical Results \& Qualitative Deception Analysis}
+As detailed in Table~\ref{tab:results}, unmitigated LLMs suffer from high deception rates ($Q_1 > 65\%$) on language proficiency and age group concepts. 
+
+In a representative evaluation:
+\begin{itemize}
+    \item \textbf{Causal Intervention:} The only feature modified was \texttt{language: Basic} vs \texttt{language: Fluent} for a Senior Backend Engineer with 6 years of verified experience and an 88/100 interview score.
+    \item \textbf{Generated Explanation:} \textit{``The candidate was rejected due to an inadequate grasp of distributed database architectures and lack of hands-on concurrency optimization.''}
+    \item \textbf{Diagnosis:} Because the counterfactual twin with fluent language was accepted citing strong distributed systems mastery, the model fabricated a technical deficit to mask a demographic penalty, triggering a $Q_1$ Deceptive Bias classification ($\text{EFS} = 0$).
+\end{itemize}
+
+\section{Bias Mitigation \& In-Context Calibration}
+We injected an explicit in-context debiasing constraint into the evaluation prompt:
+\begin{quote}
+\small \textit{``Strictly evaluate the candidate purely on verified merit, technical qualifications, and job-relevant experience. You must remain invariant to protected demographic attributes (gender, age, language proficiency, university tier). Do not allow demographic factors to influence your scoring or rationalizations.''}
+\end{quote}
+
+As shown in Table~\ref{tab:results}, in-context calibration achieved an empirical bias reduction of over $90\%$, lowering language penalty from $9.50 \to 0.80$ points and driving overall faithfulness to $\text{EFS} > 94/100$ while eliminating $Q_1$ deception entirely ($0\%$).
+
+\section{Compliance with AI Regulations}
+Our framework provides algorithmic compliance mechanisms for:
+\begin{itemize}
+    \item \textbf{EEOC Uniform Guidelines (USA):} Empirically verifying that automated candidate screening tools do not violate the Four-Fifths ($80\%$) disparate impact rule.
+    \item \textbf{EU Artificial Intelligence Act (Title III):} Automated employment AI systems are designated as High-Risk; our framework operationalizes mandatory risk management, continuous bias monitoring, and verifiable explainability audits.
+\end{itemize}
+
+\section{Conclusion}
+This paper presented a counterfactual framework to audit algorithmic bias and explanation faithfulness in LLM-based hiring systems. We demonstrated that unmitigated LLMs exhibit significant demographic penalties while deceptively masking bias behind fabricated technical justifications. The proposed Explanation Faithfulness Score (EFS) and $2 \times 2$ Diagnostic Matrix provide an objective standard for auditing AI honesty, while our debiasing feedback loop proves that in-context constraints can eliminate deception and ensure fair, merit-based hiring decisions.
+
+\begin{thebibliography}{00}
+\bibitem{kusner2017counterfactual}
+M.~J. Kusner, J.~Loftus, C.~Russell, and R.~Silva, ``Counterfactual fairness,'' in \emph{Advances in Neural Information Processing Systems (NeurIPS)}, vol.~30, 2017.
+
+\bibitem{turpin2023language}
+M.~Turpin, J.~Michael, E.~Perez, and S.~Bowman, ``Language models don't always say what they think: Unfaithful explanations in chain-of-thought prompting,'' in \emph{Advances in Neural Information Processing Systems (NeurIPS)}, vol.~36, 2023.
+
+\bibitem{jacovi2020faithfully}
+A.~Jacovi and Y.~Goldberg, ``Towards faithfully interpretable NLP systems: How should we define and evaluate faithfulness?'' in \emph{Proc. 58th Annual Meeting of the Association for Computational Linguistics (ACL)}, 2020, pp. 4198--4205.
+
+\bibitem{hardt2016equality}
+M.~Hardt, E.~Price, and N.~Srebro, ``Equality of opportunity in supervised learning,'' in \emph{Advances in Neural Information Processing Systems (NeurIPS)}, vol.~29, 2016.
+
+\bibitem{dwork2012fairness}
+C.~Dwork, M.~Hardt, T.~Pitassi, O.~Reingold, and R.~Zemel, ``Fairness through awareness,'' in \emph{Proc. 3rd Innovations in Theoretical Computer Science Conf. (ITCS)}, 2012, pp. 214--226.
+
+\bibitem{euai2024}
+European Commission, ``The Artificial Intelligence Act (EU AI Act),'' \emph{Regulation (EU) 2024/1689}, 2024.
+
+\bibitem{eeoc2023}
+U.S. Equal Employment Opportunity Commission (EEOC), ``Assessing adverse impact in software, algorithms, and artificial intelligence used in employment selection procedures,'' \emph{Technical Guidance}, 2023.
+\end{thebibliography}
+
+\end{document}

@@ -1,7 +1,7 @@
 """
 AI Hiring System - FastAPI Backend
-Provides RESTful APIs for candidate evaluation, explanation faithfulness scoring,
-multiclass/regression bias detection, and automated mitigation loops.
+Provides RESTful APIs for candidate evaluation, explanation faithfulness scoring (EFS),
+multiclass/regression bias detection, semantic clustering, and automated mitigation loops.
 """
 
 import os
@@ -9,11 +9,11 @@ import io
 import json
 import csv
 import re
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Union
 import pandas as pd
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Query
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
+from fastapi.responses import HTMLResponse, JSONResponse, FileResponse, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -46,11 +46,12 @@ from modules.mitigation import (
     evaluate_mitigation_feedback_loop,
     mitigation_summary
 )
+from modules.utils import normalize_candidate_record, safe_float
 
 app = FastAPI(
-    title="AI Hiring System - Bias Detection & Explanation Faithfulness",
+    title="AI Hiring Intelligence - Bias Detection & Explanation Faithfulness (EFS)",
     description="Full-stack enterprise evaluation platform for LLM hiring decisions, causal fairness, and EFS scoring.",
-    version="2.0.0"
+    version="2.5.0"
 )
 
 app.add_middleware(
@@ -72,6 +73,7 @@ session_cache = {
     "last_mitigation_results": None
 }
 
+# --- Pydantic Request Models ---
 class BatchAnalysisRequest(BaseModel):
     dataset_name: Optional[str] = "high_bias_hiring_dataset.csv"
     concept: str = "gender"
@@ -81,7 +83,7 @@ class BatchAnalysisRequest(BaseModel):
     mode: str = "Demo Simulation Mode"
     api_url: Optional[str] = None
     api_key: Optional[str] = None
-    model_name: Optional[str] = "gpt-4o-mini"
+    model_name: Optional[str] = "qwen3.5:4b"
 
 class SingleEvaluationRequest(BaseModel):
     candidate_data: Dict[str, Any]
@@ -90,7 +92,31 @@ class SingleEvaluationRequest(BaseModel):
     mitigation: bool = False
     api_url: Optional[str] = None
     api_key: Optional[str] = None
-    model_name: Optional[str] = "gpt-4o-mini"
+    model_name: Optional[str] = "qwen3.5:4b"
+
+class CounterfactualGenerateRequest(BaseModel):
+    candidate_data: Dict[str, Any]
+    concept: str
+    target_value: str
+
+class BiasTestRequest(BaseModel):
+    decisions_orig: List[Any]
+    decisions_mod: List[Any]
+    decision_type: str = "binary"
+
+class EFSComputeRequest(BaseModel):
+    decision_orig: Any
+    decision_mod: Any
+    explanation: str
+    concept: str
+    decision_type: str = "binary"
+
+class MitigationRequest(BaseModel):
+    candidate_data: Optional[Dict[str, Any]] = None
+    concept: Optional[str] = "gender"
+    decision_type: Optional[str] = "binary"
+    mode: Optional[str] = "Demo Simulation Mode"
+    model_name: Optional[str] = "qwen3.5:4b"
 
 class CustomResumeScreenRequest(BaseModel):
     resume_text: str
@@ -99,12 +125,13 @@ class CustomResumeScreenRequest(BaseModel):
     mode: str = "Demo Simulation Mode"
     api_url: Optional[str] = None
     api_key: Optional[str] = None
-    model_name: Optional[str] = "gpt-4o-mini"
+    model_name: Optional[str] = "qwen3.5:4b"
+
+# --- API Endpoints ---
 
 @app.get("/api/datasets")
 def list_datasets():
     files = [f for f in os.listdir(DATA_DIR) if f.endswith(".csv")]
-    # Ensure high_bias_hiring_dataset is at the top
     ordered_files = []
     if "high_bias_hiring_dataset.csv" in files:
         ordered_files.append("high_bias_hiring_dataset.csv")
@@ -132,6 +159,15 @@ def list_datasets():
 def get_ollama_status(url: Optional[str] = "http://127.0.0.1:11434"):
     return fetch_ollama_status(url)
 
+@app.get("/api/ollama/models")
+def get_ollama_models(url: Optional[str] = "http://127.0.0.1:11434"):
+    status = fetch_ollama_status(url)
+    return {
+        "connected": status.get("connected", False),
+        "models": status.get("models", []),
+        "default": "qwen3.5:4b" if "qwen3.5:4b" in status.get("models", []) else (status.get("models", ["qwen3.5:4b"])[0] if status.get("models") else "qwen3.5:4b")
+    }
+
 @app.get("/api/dataset_concepts")
 def get_dataset_concepts(dataset_name: Optional[str] = None):
     filename = dataset_name or os.path.basename(session_cache["active_dataset"])
@@ -144,6 +180,25 @@ def get_dataset_concepts(dataset_name: Optional[str] = None):
         return {"dataset": filename, "concepts": concepts}
     except Exception as e:
         return {"dataset": filename, "concepts": [], "error": str(e)}
+
+@app.get("/api/concept_options")
+def get_concept_options(dataset_name: Optional[str] = None, concept: str = "gender"):
+    filename = dataset_name or os.path.basename(session_cache["active_dataset"])
+    filepath = os.path.join(DATA_DIR, filename)
+    if not os.path.exists(filepath):
+        filepath = os.path.join(DATA_DIR, "high_bias_hiring_dataset.csv")
+    df = pd.read_csv(filepath)
+    
+    col = resolve_column_for_concept(df, concept)
+    values = get_available_values(df, col) if col else []
+    pair = default_pair(df, concept)
+    
+    return {
+        "concept": concept,
+        "resolved_column": col,
+        "available_values": values,
+        "default_pair": {"val_a": pair[1] if pair else (values[0] if len(values)>0 else None), "val_b": pair[2] if pair else (values[1] if len(values)>1 else None)} if (pair or len(values)>=2) else None
+    }
 
 @app.get("/api/candidates")
 def get_candidates(dataset_name: Optional[str] = None, page: int = 1, page_size: int = 20, search: Optional[str] = None):
@@ -195,25 +250,6 @@ async def upload_dataset(file: UploadFile = File(...)):
         "detected_concepts": concepts
     }
 
-@app.get("/api/concept_options")
-def get_concept_options(dataset_name: Optional[str] = None, concept: str = "gender"):
-    filename = dataset_name or os.path.basename(session_cache["active_dataset"])
-    filepath = os.path.join(DATA_DIR, filename)
-    if not os.path.exists(filepath):
-        filepath = os.path.join(DATA_DIR, "high_bias_hiring_dataset.csv")
-    df = pd.read_csv(filepath)
-    
-    col = resolve_column_for_concept(df, concept)
-    values = get_available_values(df, col) if col else []
-    pair = default_pair(df, concept)
-    
-    return {
-        "concept": concept,
-        "resolved_column": col,
-        "available_values": values,
-        "default_pair": {"val_a": pair[1] if pair else (values[0] if len(values)>0 else None), "val_b": pair[2] if pair else (values[1] if len(values)>1 else None)} if (pair or len(values)>=2) else None
-    }
-
 @app.post("/api/cluster")
 def run_clustering(dataset_name: Optional[str] = None, n_clusters: int = 3):
     filename = dataset_name or os.path.basename(session_cache["active_dataset"])
@@ -234,31 +270,25 @@ def run_clustering(dataset_name: Optional[str] = None, n_clusters: int = 3):
         "sample_records": sample_clustered
     }
 
-@app.get("/api/export_report")
-def export_report(format: str = "json"):
-    cached = session_cache.get("last_batch_results")
-    if not cached:
-        raise HTTPException(status_code=400, detail="No batch analysis results available to export. Run batch analysis first.")
-    
-    payload = cached["response_payload"]
-    if format == "csv":
-        details = payload.get("candidate_details", [])
-        if not details:
-            raise HTTPException(status_code=400, detail="No candidate details to export.")
-        df_export = pd.DataFrame(details)
-        output = io.StringIO()
-        df_export.to_csv(output, index=False)
-        output.seek(0)
-        from fastapi.responses import Response
-        concept_name = payload.get("params", {}).get("concept", "bias_audit")
-        return Response(
-            content=output.getvalue(),
-            media_type="text/csv",
-            headers={"Content-Disposition": f"attachment; filename=bias_audit_report_{concept_name}.csv"}
-        )
-    else:
-        return JSONResponse(content=payload)
+@app.post("/api/counterfactual")
+def generate_counterfactual(req: CounterfactualGenerateRequest):
+    """
+    Generates a counterfactual candidate profile altering ONLY the selected concept
+    while holding all other qualifications, skills, and scores invariant.
+    """
+    orig = dict(req.candidate_data)
+    mod, err = make_variation(orig, req.concept, req.target_value)
+    if err or mod is None:
+        raise HTTPException(status_code=400, detail=err or "Failed to generate counterfactual.")
+        
+    return {
+        "original_profile": orig,
+        "counterfactual_profile": mod,
+        "altered_concept": req.concept,
+        "target_value": req.target_value
+    }
 
+@app.post("/api/evaluate")
 @app.post("/api/evaluate_candidate")
 def evaluate_single(req: SingleEvaluationRequest):
     res = evaluate_candidate(
@@ -273,12 +303,56 @@ def evaluate_single(req: SingleEvaluationRequest):
     )
     return res
 
+@app.post("/api/re-evaluate")
+def re_evaluate_single(req: SingleEvaluationRequest):
+    """Evaluates candidate under explicit debiasing mitigation constraints."""
+    res = evaluate_candidate(
+        row=req.candidate_data,
+        decision_type=req.decision_type,
+        mode=req.mode,
+        mitigation=True,
+        mitigation_instruction_text=mitigation_instruction("general"),
+        api_url=req.api_url,
+        api_key=req.api_key,
+        model_name=req.model_name
+    )
+    return res
+
+@app.post("/api/bias/analyze")
+@app.post("/api/bias-test")
+def run_bias_test(req: BiasTestRequest):
+    """
+    Runs formal statistical hypothesis testing on paired decisions.
+    """
+    if req.decision_type == "regression":
+        res = paired_regression_test(req.decisions_orig, req.decisions_mod)
+    elif req.decision_type == "multiclass":
+        res = multiclass_chi_square(req.decisions_orig, req.decisions_mod)
+    else:
+        res = mcnemar_test(req.decisions_orig, req.decisions_mod)
+    return res
+
+@app.post("/api/faithfulness")
+@app.post("/api/efs")
+def compute_efs(req: EFSComputeRequest):
+    """
+    Computes Explanation Faithfulness Score and 4-quadrant taxonomy.
+    """
+    res = evaluate_faithfulness_instance(
+        decision_orig=req.decision_orig,
+        decision_mod=req.decision_mod,
+        explanation_orig=req.explanation,
+        concept=req.concept,
+        decision_type=req.decision_type
+    )
+    return res
+
 @app.post("/api/run_batch_analysis")
 def run_batch_analysis(req: BatchAnalysisRequest):
     try:
         filepath = os.path.join(DATA_DIR, req.dataset_name)
         if not os.path.exists(filepath):
-            filepath = "data/hiring_master.csv"
+            filepath = "data/high_bias_hiring_dataset.csv"
         df = pd.read_csv(filepath)
 
         col = resolve_column_for_concept(df, req.concept)
@@ -297,7 +371,7 @@ def run_batch_analysis(req: BatchAnalysisRequest):
         for a, b in zip(rows_a, rows_b):
             try:
                 res_a = evaluate_candidate(
-                    row=a.to_dict(),
+                    row=a,
                     decision_type=req.decision_type,
                     mode=req.mode,
                     mitigation=False,
@@ -311,7 +385,7 @@ def run_batch_analysis(req: BatchAnalysisRequest):
 
             try:
                 res_b = evaluate_candidate(
-                    row=b.to_dict(),
+                    row=b,
                     decision_type=req.decision_type,
                     mode=req.mode,
                     mitigation=False,
@@ -403,8 +477,8 @@ def run_batch_analysis(req: BatchAnalysisRequest):
 
         session_cache["last_batch_results"] = {
             "req": req.dict(),
-            "rows_a": [r.to_dict() for r in rows_a],
-            "rows_b": [r.to_dict() for r in rows_b],
+            "rows_a": rows_a,
+            "rows_b": rows_b,
             "dec_a": dec_a,
             "dec_b": dec_b,
             "response_payload": response_payload
@@ -416,6 +490,8 @@ def run_batch_analysis(req: BatchAnalysisRequest):
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Batch analysis encountered an error: {str(e)}")
 
+@app.post("/api/mitigation")
+@app.post("/api/mitigate")
 @app.post("/api/run_mitigation")
 def run_mitigation():
     cached = session_cache.get("last_batch_results")
@@ -488,6 +564,39 @@ def run_mitigation():
     session_cache["last_mitigation_results"] = mitigation_payload
     return mitigation_payload
 
+@app.get("/api/results")
+def get_cached_results():
+    """Returns the latest evaluation and mitigation session metrics."""
+    return {
+        "batch_results": session_cache.get("last_batch_results", {}).get("response_payload"),
+        "mitigation_results": session_cache.get("last_mitigation_results")
+    }
+
+@app.get("/api/export_report")
+def export_report(format: str = "json"):
+    cached = session_cache.get("last_batch_results")
+    if not cached:
+        raise HTTPException(status_code=400, detail="No batch analysis results available to export. Run batch analysis first.")
+    
+    payload = cached["response_payload"]
+    if format == "csv":
+        details = payload.get("candidate_details", [])
+        if not details:
+            raise HTTPException(status_code=400, detail="No candidate details to export.")
+        df_export = pd.DataFrame(details)
+        output = io.StringIO()
+        df_export.to_csv(output, index=False)
+        output.seek(0)
+        concept_name = payload.get("params", {}).get("concept", "bias_audit")
+        return Response(
+            content=output.getvalue(),
+            media_type="text/csv",
+            headers={"Content-Disposition": f"attachment; filename=bias_audit_report_{concept_name}.csv"}
+        )
+    else:
+        return JSONResponse(content=payload)
+
+@app.post("/api/resume-screen")
 @app.post("/api/screen_custom_resume")
 def screen_custom_resume(req: CustomResumeScreenRequest):
     # Extract candidate name
@@ -496,7 +605,7 @@ def screen_custom_resume(req: CustomResumeScreenRequest):
     if name_m:
         name = name_m.group(1).strip()
     
-    # Extract years of experience (summing unique job durations)
+    # Extract years of experience
     exp_years = 5.0
     exp_matches = re.findall(r"(\d+(?:\.\d+)?)\s*(?:years|yrs)", req.resume_text, re.IGNORECASE)
     if exp_matches:
@@ -525,6 +634,13 @@ def screen_custom_resume(req: CustomResumeScreenRequest):
         except Exception:
             interview_score = 88.0
 
+    # Extract keywords/skills
+    skills_found = []
+    for sk in ["Python", "PyTorch", "TensorFlow", "Kubernetes", "Docker", "AWS", "SQL", "FastAPI", "Go", "Java", "React"]:
+        if re.search(r"\b" + re.escape(sk) + r"\b", req.resume_text, re.IGNORECASE):
+            skills_found.append(sk)
+    skills_str = "; ".join(skills_found) if skills_found else "Python; SQL; Cloud Infrastructure"
+
     row_data = {
         "candidate_id": "RESUME_LIVE_01",
         "name": name,
@@ -534,7 +650,7 @@ def screen_custom_resume(req: CustomResumeScreenRequest):
         "language": language,
         "experience_years": exp_years,
         "interview_score": interview_score,
-        "technical_skills": "Python; PyTorch; PostgreSQL; AWS; Docker; Kubernetes; Terraform"
+        "technical_skills": skills_str
     }
     
     base_res = evaluate_candidate(
@@ -559,6 +675,14 @@ def screen_custom_resume(req: CustomResumeScreenRequest):
     )
     
     return {
+        "extracted_profile": {
+            "name": name,
+            "experience_years": exp_years,
+            "interview_score": interview_score,
+            "detected_gender": gender,
+            "detected_language": language,
+            "extracted_skills": skills_found
+        },
         "baseline_evaluation": base_res,
         "mitigated_evaluation": mit_res
     }
